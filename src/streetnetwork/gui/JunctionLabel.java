@@ -1,21 +1,29 @@
 package streetnetwork.gui;
 
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.net.URL;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import streetnetwork.gui.popups.JunctionSettingsDialog;
 import streetnetwork.viewmodels.Junction;
 
 /**
  *
  * @author Markus Mohanty <markus.mo at gmx.net>
  */
-public class JunctionLabel extends JLabel
+public class JunctionLabel extends JLabel implements MouseListener
 {
     private Junction junction;
     private boolean active;
+    private int number;
     
     public JunctionLabel()
     {
-        this.setIcon(new ImageIcon("streetnetwork/images/junction.png"));
+        URL resource = this.getClass().getResource("images/junction_inactive.png");
+        this.setIcon(new ImageIcon(resource));
+        this.active = false;
+        this.addMouseListener(this);
     }
 
     public Junction getJunction()
@@ -28,15 +36,57 @@ public class JunctionLabel extends JLabel
         this.junction = junction;
     }
 
-    public boolean isActive()
+    public int getNumber()
     {
-        return active;
+        return number;
     }
 
-    public void setActive(boolean active)
+    public void setNumber(int number)
     {
-        this.active = active;
+        this.number = number;
     }
-    
-    
+
+    @Override
+    public void mouseClicked(MouseEvent e)
+    {
+        if(!this.active)
+        {
+            URL resource = this.getClass().getResource("images/junction.png");
+            this.setIcon(new ImageIcon(resource));
+            this.repaint();
+            this.revalidate();
+            this.active = !this.active;
+            
+            JunctionSettingsDialog dialog = new JunctionSettingsDialog(null, true, number);
+            dialog.setVisible(true);
+        }
+        else
+        {
+            URL resource = this.getClass().getResource("images/junction_inactive.png");
+            this.setIcon(new ImageIcon(resource));
+            this.repaint();
+            this.revalidate();
+            this.active = !this.active;
+        }
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e)
+    {
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e)
+    {
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e)
+    {
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e)
+    {
+    }
 }

@@ -3,27 +3,17 @@ package streetnetwork.viewmodels;
  *
  * @author Markus Mohanty <markus.mo at gmx.net>
  */
-public class Source extends Street
+public class Source
 {
     private double rate;
 
-    public double getRate()
-    {
-        return rate;
-    }
-
-    public void setRate(double rate)
+    public Source(double rate)
     {
         this.rate = rate;
     }
     
-    @Override
-    public void setFlow(double flow)
-    {}
-
-    @Override
-    public double getFlow()
+    public double getRate()
     {
-        return -1.0f;
+        return rate;
     }
 }

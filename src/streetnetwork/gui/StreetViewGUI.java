@@ -6,10 +6,13 @@
 package streetnetwork.gui;
 
 import java.awt.Frame;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.GroupLayout;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -27,7 +30,6 @@ import streetnetwork.gui.popups.ShowLPDialog;
  */
 public class StreetViewGUI extends javax.swing.JFrame implements NewStreetNetworkObserver
 {
-
     /**
      * Creates new form StreetViewGUI
      */
@@ -35,7 +37,6 @@ public class StreetViewGUI extends javax.swing.JFrame implements NewStreetNetwor
     {
         initComponents();
         this.scrollPane.setPreferredSize(this.getPreferredSize());
-        this.dropPanel.setPreferredSize(this.scrollPane.getPreferredSize());
     }
 
     /**
@@ -69,7 +70,7 @@ public class StreetViewGUI extends javax.swing.JFrame implements NewStreetNetwor
             .addGap(0, 567, Short.MAX_VALUE)
         );
         dropPanelLayout.setVerticalGroup(dropPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGap(0, 447, Short.MAX_VALUE)
+            .addGap(0, 425, Short.MAX_VALUE)
         );
 
         scrollPane.setViewportView(dropPanel);
@@ -159,7 +160,6 @@ public class StreetViewGUI extends javax.swing.JFrame implements NewStreetNetwor
 
     private void showMenuItemActionPerformed(ActionEvent evt)//GEN-FIRST:event_showMenuItemActionPerformed
     {//GEN-HEADEREND:event_showMenuItemActionPerformed
-        // TODO add your handling code here:
         String lp = "this is a lp";
         ShowLPDialog dialog = new ShowLPDialog(this, lp, true);
         dialog.setVisible(true);
@@ -174,17 +174,17 @@ public class StreetViewGUI extends javax.swing.JFrame implements NewStreetNetwor
     {//GEN-HEADEREND:event_newStreetNetworkMenuItemActionPerformed
        NewStreetNetworkDialog dialog = new NewStreetNetworkDialog(new javax.swing.JFrame(),this, true);
        dialog.setVisible(true);
-           
     }//GEN-LAST:event_newStreetNetworkMenuItemActionPerformed
 
     private void resetStreetNetworkMenuItemActionPerformed(ActionEvent evt)//GEN-FIRST:event_resetStreetNetworkMenuItemActionPerformed
     {//GEN-HEADEREND:event_resetStreetNetworkMenuItemActionPerformed
-        // TODO add your handling code here:
+        this.dropPanel.removeAll();
+        this.repaint();
+        this.revalidate();
     }//GEN-LAST:event_resetStreetNetworkMenuItemActionPerformed
 
     private void exitMenuItemActionPerformed(ActionEvent evt)//GEN-FIRST:event_exitMenuItemActionPerformed
     {//GEN-HEADEREND:event_exitMenuItemActionPerformed
-        // TODO add your handling code here:
         this.dispose();
         System.exit(0);
     }//GEN-LAST:event_exitMenuItemActionPerformed
@@ -254,6 +254,17 @@ public class StreetViewGUI extends javax.swing.JFrame implements NewStreetNetwor
     @Override
     public void didEnterDimensions(int x, int y)
     {
-        System.out.println("invoke");
+        this.dropPanel.setLayout(new GridLayout(x,y));
+        this.scrollPane.add(this.dropPanel);
+        this.scrollPane.setViewportView(this.dropPanel);
+        for (int i = 0; i < x*y; i++)
+        {
+            JunctionLabel junction = new JunctionLabel();
+            junction.setNumber(i);
+            this.dropPanel.add(junction);
+        }
+        this.dropPanel.setVisible(true);
+        this.repaint();
+        this.revalidate();
     }
 }

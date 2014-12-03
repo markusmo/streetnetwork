@@ -23,6 +23,11 @@ public class Junction implements IStreetNetworkItem
     private double probDA;
     private double probDB;
     private double probDC;
+    
+    private Source sourceNorth;
+    private Source sourceSouth;
+    private Source sourceWest;
+    private Source sourceEast;
 
     public Junction(int id)
     {
@@ -152,5 +157,45 @@ public class Junction implements IStreetNetworkItem
     public void setProbDC(double probDC)
     {
         this.probDC = probDC;
+    }
+
+    public Source getSourceNorth()
+    {
+        return sourceNorth;
+    }
+
+    public void setSourceNorth(Source sourceNorth)
+    {
+        this.sourceNorth = sourceNorth;
+    }
+
+    public Source getSourceSouth()
+    {
+        return sourceSouth;
+    }
+
+    public void setSourceSouth(Source sourceSouth)
+    {
+        this.sourceSouth = sourceSouth;
+    }
+
+    public Source getSourceWest()
+    {
+        return sourceWest;
+    }
+
+    public void setSourceWest(Source sourceWest)
+    {
+        this.sourceWest = sourceWest;
+    }
+
+    public Source getSourceEast()
+    {
+        return sourceEast;
+    }
+
+    public void setSourceEast(Source sourceEast)
+    {
+        this.sourceEast = sourceEast;
     }
 }

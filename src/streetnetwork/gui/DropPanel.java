@@ -8,5 +8,5 @@ import javax.swing.JPanel;
  */
 public class DropPanel extends JPanel
 {
-
+   
 }
