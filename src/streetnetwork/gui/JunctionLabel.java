@@ -5,6 +5,8 @@ import java.awt.event.MouseListener;
 import java.net.URL;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
 import streetnetwork.gui.popups.JunctionSettingsDialog;
 import streetnetwork.viewmodels.Junction;
 
@@ -18,12 +20,17 @@ public class JunctionLabel extends JLabel implements MouseListener
     private boolean active;
     private int number;
     
-    public JunctionLabel()
+    public JunctionLabel(int number)
     {
         URL resource = this.getClass().getResource("images/junction_inactive.png");
         this.setIcon(new ImageIcon(resource));
         this.active = false;
         this.addMouseListener(this);
+        this.number = number;
+        this.setIconTextGap(-230);
+        this.setText(""+number);
+        this.setVerticalTextPosition(JLabel.TOP);
+        this.setBorder(LineBorder.createBlackLineBorder());
     }
 
     public Junction getJunction()

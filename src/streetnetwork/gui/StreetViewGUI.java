@@ -6,13 +6,13 @@
 package streetnetwork.gui;
 
 import java.awt.Frame;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import javax.swing.GroupLayout;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -252,17 +252,31 @@ public class StreetViewGUI extends javax.swing.JFrame implements NewStreetNetwor
     // End of variables declaration//GEN-END:variables
 
     @Override
-    public void didEnterDimensions(int x, int y)
+    public void didEnterDimensions(int rows, int columns)
     {
-        this.dropPanel.setLayout(new GridLayout(x,y));
+        //this.dropPanel.setLayout(new GridLayout(x,y));
+        this.dropPanel.setLayout(new GridBagLayout());
         this.scrollPane.add(this.dropPanel);
         this.scrollPane.setViewportView(this.dropPanel);
-        for (int i = 0; i < x*y; i++)
+        
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.anchor = GridBagConstraints.CENTER;
+        int number = 0;
+        for (int row = 0; row < rows; row++)
         {
-            JunctionLabel junction = new JunctionLabel();
-            junction.setNumber(i);
-            this.dropPanel.add(junction);
+            for (int column = 0; column < columns; column++)
+            {
+                System.out.print("column "+column);
+                System.out.println(" row "+row);
+                gbc.gridx = column;
+                gbc.gridy = row;
+                JunctionLabel junction = new JunctionLabel(number++);
+                //junction.setNumber(row);
+                this.dropPanel.add(junction,gbc);
+            }
         }
+        
         this.dropPanel.setVisible(true);
         this.repaint();
         this.revalidate();
