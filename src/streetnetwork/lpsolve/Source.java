@@ -1,16 +1,15 @@
 package streetnetwork.lpsolve;
 
 public class Source {
-	public Zufahrt nach;
-	private int value;
+	public Direction to;
+	private double value;
 
-	public Source(Zufahrt nach, int value) {
-		this.nach = nach;
+	public Source(Direction to, double value) {
+		this.to = to;
 		this.value = value;
 	}
 
 	public String print() {
-		return "i" + nach.kreuzungsid + nach.richtung + " = " + value + " c;";
+		return "i" + to.intersection_id + to.direction + " = " + value + " c;";
 	}
-
 }

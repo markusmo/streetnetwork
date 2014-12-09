@@ -11,18 +11,22 @@ public class Junction implements IStreetNetworkItem
     private double probAB;
     private double probAC;
     private double probAD;
+    private int flowA;
     //B
     private double probBA;
     private double probBC;
     private double probBD;
+    private int flowB;
     //C
     private double probCA;
     private double probCB;
     private double probCD;
+    private int flowC;
     //D
     private double probDA;
     private double probDB;
     private double probDC;
+    private int flowD;
     
     private Source sourceNorth;
     private Source sourceSouth;
@@ -32,11 +36,52 @@ public class Junction implements IStreetNetworkItem
     public Junction(int id)
     {
         this.id = id;
+        this.setDefault();
     }
     
     public int getId()
     {
         return id;
+    }
+
+    public int getFlowA()
+    {
+        return flowA;
+    }
+
+    public void setFlowA(int flowA)
+    {
+        this.flowA = flowA;
+    }
+
+    public int getFlowB()
+    {
+        return flowB;
+    }
+
+    public void setFlowB(int flowB)
+    {
+        this.flowB = flowB;
+    }
+
+    public int getFlowC()
+    {
+        return flowC;
+    }
+
+    public void setFlowC(int flowC)
+    {
+        this.flowC = flowC;
+    }
+
+    public int getFlowD()
+    {
+        return flowD;
+    }
+
+    public void setFlowD(int flowD)
+    {
+        this.flowD = flowD;
     }
     
     public double getProbAB()
@@ -197,5 +242,29 @@ public class Junction implements IStreetNetworkItem
     public void setSourceEast(Source sourceEast)
     {
         this.sourceEast = sourceEast;
+    }
+
+    public void setDefault()
+    {
+        //default settings
+        this.probAB = 0.5;
+        this.probAC = 0.25;
+        this.probAD = 0.25;
+        this.flowA = 1;
+        
+        this.probBA = 0.25;
+        this.probBC = 0.5;
+        this.probBD = 0.25;
+        this.flowB = 1;
+        
+        this.probCA = 0.25;
+        this.probCB = 0.25;
+        this.probCD = 0.5;
+        this.flowC = 1;
+        
+        this.probDA = 0.25;
+        this.probDB = 0.25;
+        this.probDC = 0.5;
+        this.flowD = 1;
     }
 }

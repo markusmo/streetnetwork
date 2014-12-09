@@ -3,26 +3,45 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package streetnetwork.gui.popups;
+package streetnetwork.gui;
 
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.URL;
 import javax.swing.GroupLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle;
-import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
+import org.omg.CosNaming.BindingType;
+import streetnetwork.controller.StreetNetworkController;
+import streetnetwork.viewmodels.SourceDirection;
 
 /**
  *
  * @author Markus Mohanty <markus.mo at gmx.net>
  */
-public class JunctionSettingsDialog extends javax.swing.JDialog
+public class JunctionSettingsDialog extends JDialog
 {
     private int number;
+    private int row;
+    private int column;
+    
+    public void setRow(int row)
+    {
+        this.row = row;
+    }
+    
+    public void setColumn(int column)
+    {
+        this.column = column;
+    }
+    
     /**
      * Creates new form JunctionSettingsDialog
      * @param parent
@@ -34,10 +53,70 @@ public class JunctionSettingsDialog extends javax.swing.JDialog
         super(parent, modal);
         initComponents();
         this.number = number;
-        String text = this.titleLable.getText();
-        this.titleLable.setText(text + " " + number);
+        String text = this.titleLabel.getText();
+        this.titleLabel.setText(text + " " + number);
+        URL resource = this.getClass().getResource("images/junction.png");
+        ImageIcon backgroundImage = new ImageIcon(resource);
+        
+        JLabel background = new JLabel(backgroundImage);
+        
+        background.setVisible(true);
+        this.add(background);
+        
+        //A
+        probAB.setText(""+StreetNetworkController.getInstance().getJunction(row, column).getProbAB());
+        probAC.setText(""+StreetNetworkController.getInstance().getJunction(row, column).getProbAC());
+        probAD.setText(""+StreetNetworkController.getInstance().getJunction(row, column).getProbAD());
+        if (StreetNetworkController.getInstance().getJunction(row, column).getSourceNorth()==null)
+        {
+            rateA.setText(""+StreetNetworkController.getInstance().getJunction(row, column).getFlowA());
+        }
+        else
+        {
+            SourceA.setSelected(true);
+            rateA.setText(""+StreetNetworkController.getInstance().getJunction(row, column).getSourceNorth().getRate());
+        }
+        //B
+        probBA.setText(""+StreetNetworkController.getInstance().getJunction(row, column).getProbBA());
+        probBC.setText(""+StreetNetworkController.getInstance().getJunction(row, column).getProbBC());
+        probBD.setText(""+StreetNetworkController.getInstance().getJunction(row, column).getProbBD());
+        if (StreetNetworkController.getInstance().getJunction(row, column).getSourceSouth()==null)
+        {
+            rateB.setText(""+StreetNetworkController.getInstance().getJunction(row, column).getFlowB());
+        }else
+        {
+            SourceB.setSelected(true);
+            rateB.setText(""+StreetNetworkController.getInstance().getJunction(row, column).getSourceSouth().getRate());
+        }
+        
+        //C
+        probCA.setText(""+StreetNetworkController.getInstance().getJunction(row, column).getProbCA());
+        probCB.setText(""+StreetNetworkController.getInstance().getJunction(row, column).getProbCB());
+        probCD.setText(""+StreetNetworkController.getInstance().getJunction(row, column).getProbCD());
+        if (StreetNetworkController.getInstance().getJunction(row, column).getSourceWest()==null)
+        {
+            rateC.setText(""+StreetNetworkController.getInstance().getJunction(row, column).getFlowC());
+        }else
+        {
+            SourceC.setSelected(true);
+            rateC.setText(""+StreetNetworkController.getInstance().getJunction(row, column).getSourceWest().getRate());
+        }
+        
+        //D
+        probDA.setText(""+StreetNetworkController.getInstance().getJunction(row, column).getProbDA());
+        probDB.setText(""+StreetNetworkController.getInstance().getJunction(row, column).getProbDB());
+        probDC.setText(""+StreetNetworkController.getInstance().getJunction(row, column).getProbDC());
+        if (StreetNetworkController.getInstance().getJunction(row, column).getSourceEast()==null)
+        {
+            rateD.setText(""+StreetNetworkController.getInstance().getJunction(row, column).getFlowD());
+        }else
+        {
+            SourceD.setSelected(true);
+            rateD.setText(""+StreetNetworkController.getInstance().getJunction(row, column).getSourceEast().getRate());
+        }
+        
     }
-
+    
     /**
      * This method is called from within the constructor to
      * initialize the form.
@@ -49,6 +128,20 @@ public class JunctionSettingsDialog extends javax.swing.JDialog
     private void initComponents()
     {
 
+        okButton = new JButton();
+        titleLabel = new JLabel();
+        probAC = new JTextField();
+        probAB = new JTextField();
+        probAD = new JTextField();
+        probBC = new JTextField();
+        probBA = new JTextField();
+        probBD = new JTextField();
+        probCA = new JTextField();
+        probCD = new JTextField();
+        probCB = new JTextField();
+        probDA = new JTextField();
+        probDC = new JTextField();
+        probDB = new JTextField();
         jLabel1 = new JLabel();
         jLabel2 = new JLabel();
         jLabel3 = new JLabel();
@@ -61,286 +154,385 @@ public class JunctionSettingsDialog extends javax.swing.JDialog
         jLabel10 = new JLabel();
         jLabel11 = new JLabel();
         jLabel12 = new JLabel();
+        SourceA = new JCheckBox();
         jLabel13 = new JLabel();
+        rateA = new JTextField();
+        SourceB = new JCheckBox();
+        rateB = new JTextField();
         jLabel14 = new JLabel();
+        SourceD = new JCheckBox();
         jLabel15 = new JLabel();
+        rateD = new JTextField();
+        SourceC = new JCheckBox();
         jLabel16 = new JLabel();
-        sourceRateA = new JTextField();
-        sourceRateD = new JTextField();
-        sourceRateC = new JTextField();
-        sourceRateB = new JTextField();
-        probCA = new JTextField();
-        probCD = new JTextField();
-        probCB = new JTextField();
-        probDA = new JTextField();
-        probDC = new JTextField();
-        probDB = new JTextField();
-        probAC = new JTextField();
-        probAB = new JTextField();
-        probAD = new JTextField();
-        probBC = new JTextField();
-        probBA = new JTextField();
-        probBD = new JTextField();
-        jButton1 = new JButton();
-        titleLable = new JLabel();
+        rateC = new JTextField();
+        forAllButton = new JButton();
 
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Junction Settings");
 
-        jLabel1.setHorizontalAlignment(SwingConstants.CENTER);
-        jLabel1.setText("A");
-
-        jLabel2.setHorizontalAlignment(SwingConstants.CENTER);
-        jLabel2.setText("B");
-
-        jLabel3.setText("C");
-
-        jLabel4.setText("D");
-
-        jLabel5.setText("AC");
-
-        jLabel6.setText("AB");
-
-        jLabel7.setText("AD");
-
-        jLabel8.setText("BC");
-
-        jLabel9.setText("BA");
-
-        jLabel10.setText("BD");
-
-        jLabel11.setText("CA");
-
-        jLabel12.setText("CD");
-
-        jLabel13.setText("CB");
-
-        jLabel14.setText("DA");
-
-        jLabel15.setText("DC");
-
-        jLabel16.setText("DB");
-
-        sourceRateA.setColumns(4);
-
-        sourceRateD.setColumns(4);
-
-        sourceRateC.setColumns(4);
-
-        sourceRateB.setColumns(4);
-
-        probCA.setColumns(3);
-
-        probCD.setColumns(3);
-
-        probCB.setColumns(3);
-
-        probDA.setColumns(3);
-
-        probDC.setColumns(3);
-
-        probDB.setColumns(3);
-
-        probAC.setColumns(3);
-
-        probAB.setColumns(3);
-
-        probAD.setColumns(3);
-
-        probBC.setColumns(3);
-
-        probBA.setColumns(3);
-
-        probBD.setColumns(3);
-
-        jButton1.setText("OK");
-        jButton1.addActionListener(new ActionListener()
+        okButton.setText("OK");
+        okButton.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent evt)
             {
-                jButton1ActionPerformed(evt);
+                okButtonActionPerformed(evt);
             }
         });
 
-        titleLable.setFont(new Font("Lucida Grande", 1, 13)); // NOI18N
-        titleLable.setText("Junction No.");
+        titleLabel.setFont(new Font("Lucida Grande", 1, 13)); // NOI18N
+        titleLabel.setText("Junction No. ");
+
+        probAC.setToolTipText("A to B");
+
+        probAB.setToolTipText("A to B");
+
+        probAD.setToolTipText("A to D");
+
+        probBC.setToolTipText("B to C");
+
+        probBA.setToolTipText("B to A");
+
+        probBD.setToolTipText("B to D");
+
+        probCA.setToolTipText("C to A");
+
+        probCD.setToolTipText("C to D");
+
+        probCB.setToolTipText("C to B");
+
+        probDA.setToolTipText("D to A");
+
+        probDC.setToolTipText("D to C");
+
+        probDB.setToolTipText("D to B");
+
+        jLabel1.setText("DA");
+
+        jLabel2.setText("DC");
+
+        jLabel3.setText("DB");
+
+        jLabel4.setText("CA");
+
+        jLabel5.setText("CD");
+
+        jLabel6.setText("CB");
+
+        jLabel7.setText("BC");
+
+        jLabel8.setText("BA");
+
+        jLabel9.setText("BD");
+
+        jLabel10.setText("AC");
+
+        jLabel11.setText("AB");
+
+        jLabel12.setText("AD");
+
+        SourceA.setText("Source");
+        SourceA.setToolTipText("when checked, then flow is regarded as source rate");
+
+        jLabel13.setFont(new Font("Lucida Grande", 1, 13)); // NOI18N
+        jLabel13.setText("A");
+
+        rateA.setToolTipText("flow of street");
+
+        SourceB.setText("Source");
+        SourceB.setToolTipText("when checked, then flow is regarded as source rate");
+
+        rateB.setToolTipText("flow of street");
+
+        jLabel14.setFont(new Font("Lucida Grande", 1, 13)); // NOI18N
+        jLabel14.setText("B");
+
+        SourceD.setText("Source");
+        SourceD.setToolTipText("when checked, then flow is regarded as source rate");
+
+        jLabel15.setFont(new Font("Lucida Grande", 1, 13)); // NOI18N
+        jLabel15.setText("D");
+
+        rateD.setToolTipText("flow of street");
+
+        SourceC.setText("Source");
+        SourceC.setToolTipText("when checked, then flow is regarded as source rate");
+
+        jLabel16.setFont(new Font("Lucida Grande", 1, 13)); // NOI18N
+        jLabel16.setText("C");
+
+        rateC.setToolTipText("flow of street");
+
+        forAllButton.setText("for all");
+        forAllButton.setToolTipText("take settings for all junctions");
+        forAllButton.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent evt)
+            {
+                forAllButtonActionPerformed(evt);
+            }
+        });
 
         GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel3)
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(sourceRateC, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
+                            .addComponent(rateC)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel11)
-                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(probCA, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel13)
-                                    .addComponent(jLabel12))
-                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                    .addComponent(probCD, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(probCB, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                            .addComponent(probDA, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(1, 1, 1)
-                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                    .addComponent(probDC, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(probDB, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel14)
-                            .addComponent(jLabel16)
-                            .addComponent(jLabel15))
-                        .addGap(7, 7, 7)
-                        .addComponent(sourceRateD, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel4))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(180, 180, 180)
-                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(16, 16, 16)
-                                .addComponent(jLabel5)
                                 .addGap(39, 39, 39)
-                                .addComponent(jLabel6)
-                                .addGap(37, 37, 37)
-                                .addComponent(jLabel7))
+                                .addComponent(jLabel16))
+                            .addComponent(SourceC, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                            .addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGap(0, 177, Short.MAX_VALUE)
+                                .addComponent(forAllButton)
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(okButton)
+                                .addGap(54, 54, 54))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jLabel5)
+                                    .addComponent(jLabel6))
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                    .addComponent(probCD, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(probCA, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(probCB, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE))
+                                .addGap(143, 143, 143)
+                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addComponent(probAC, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(probDC, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(probAB, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel2))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(probDB, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(probAD, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addGap(48, 48, 48)
-                                            .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                                .addComponent(sourceRateB, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(jLabel2, GroupLayout.PREFERRED_SIZE, 62, GroupLayout.PREFERRED_SIZE)))
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addGap(17, 17, 17)
-                                            .addComponent(jLabel8)
-                                            .addGap(42, 42, 42)
-                                            .addComponent(jLabel9)
-                                            .addGap(43, 43, 43)
-                                            .addComponent(jLabel10))
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(probBC, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(probBA, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(probBD, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+                                        .addComponent(jLabel3))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(probDA, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jLabel1)))
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(rateD)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(39, 39, 39)
+                                        .addComponent(jLabel15))
+                                    .addComponent(SourceD, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(67, 67, 67)
+                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+                                            .addComponent(probAC, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(jLabel10)
+                                                .addGap(17, 17, 17)))
+                                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                            .addComponent(probAB, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
+                                            .addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                .addComponent(jLabel11)
+                                                .addGap(20, 20, 20)))
+                                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                            .addComponent(probAD, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addGap(13, 13, 13)
+                                                .addComponent(jLabel12))))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(probBC, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(jLabel7)
+                                                .addGap(21, 21, 21)))
+                                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(probBA, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED))
+                                            .addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                .addComponent(jLabel8)
+                                                .addGap(21, 21, 21)))
+                                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                            .addComponent(probBD, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addGap(14, 14, 14)
+                                                .addComponent(jLabel9))))
                                     .addGroup(layout.createSequentialGroup()
                                         .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel1, GroupLayout.PREFERRED_SIZE, 62, GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(sourceRateA, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                                        .addGap(56, 56, 56)))
-                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 121, Short.MAX_VALUE)
-                                .addComponent(jButton1)))))
+                                            .addComponent(rateB, GroupLayout.PREFERRED_SIZE, 93, GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(SourceB, GroupLayout.PREFERRED_SIZE, 120, GroupLayout.PREFERRED_SIZE))
+                                        .addGap(15, 15, 15))
+                                    .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                        .addComponent(rateA, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(SourceA, GroupLayout.PREFERRED_SIZE, 125, GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addGap(36, 36, 36)
+                                            .addComponent(jLabel13)
+                                            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 13, GroupLayout.PREFERRED_SIZE)))))))
+                    .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addGap(201, 201, 201)
+                            .addComponent(titleLabel))
+                        .addGroup(layout.createSequentialGroup()
+                            .addGap(215, 215, 215)
+                            .addComponent(jLabel14))))
                 .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(216, 216, 216)
-                .addComponent(titleLable)
-                .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(31, 31, 31)
-                .addComponent(titleLable)
+            .addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(titleLabel)
+                .addGap(37, 37, 37)
+                .addComponent(jLabel13)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(rateA, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel1)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(sourceRateA, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(SourceA)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(jLabel6)
-                    .addComponent(jLabel7))
+                    .addComponent(jLabel10)
+                    .addComponent(jLabel11)
+                    .addComponent(jLabel12))
                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                     .addComponent(probAC, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                     .addComponent(probAB, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                     .addComponent(probAD, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
+                .addGap(9, 9, 9)
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel11)
-                            .addComponent(probCA, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel12)
-                            .addComponent(sourceRateC, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                            .addComponent(probCD, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel13)
-                            .addComponent(probCB, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(GroupLayout.Alignment.TRAILING, layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
                         .addGroup(layout.createSequentialGroup()
-                            .addGap(40, 40, 40)
                             .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                .addComponent(jLabel4)
-                                .addComponent(sourceRateD, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                            .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(jLabel16))
-                        .addComponent(jLabel14)
+                                .addComponent(probCA, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel4))
+                            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                .addComponent(probCD, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel5))
+                            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                .addComponent(probCB, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel6)))
                         .addGroup(layout.createSequentialGroup()
-                            .addComponent(probDA, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                .addComponent(probDA, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel1))
                             .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                             .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                                 .addComponent(probDC, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel15))
+                                .addComponent(jLabel2))
+                            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                .addComponent(probDB, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel3)))
+                        .addGroup(GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                            .addComponent(jLabel16)
                             .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(probDB, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                            .addComponent(rateC, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(SourceC)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(30, 30, 30)
-                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                            .addComponent(probBC, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                            .addComponent(probBA, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                            .addComponent(probBD, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jLabel15)
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(rateD, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel8)
-                            .addComponent(jLabel9)
-                            .addComponent(jLabel10))
-                        .addGap(18, 18, 18)
-                        .addComponent(sourceRateB, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel2)
-                        .addGap(34, 34, 34))
-                    .addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1)
-                        .addContainerGap())))
+                        .addComponent(SourceD)))
+                .addGap(9, 9, 9)
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                    .addComponent(probBC, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                    .addComponent(probBA, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                    .addComponent(probBD, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(jLabel8)
+                    .addComponent(jLabel9))
+                .addGap(18, 18, 18)
+                .addComponent(SourceB)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(rateB, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel14)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                    .addComponent(okButton)
+                    .addComponent(forAllButton))
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(ActionEvent evt)//GEN-FIRST:event_jButton1ActionPerformed
-    {//GEN-HEADEREND:event_jButton1ActionPerformed
-        //TODO parse stuff and hand it over to junctions
+    private void okButtonActionPerformed(ActionEvent evt)//GEN-FIRST:event_okButtonActionPerformed
+    {//GEN-HEADEREND:event_okButtonActionPerformed
+        //A
+        StreetNetworkController.getInstance().addProbabilityAB(row, column, Double.parseDouble(probAB.getText()));
+        StreetNetworkController.getInstance().addProbabilityAC(row, column, Double.parseDouble(probAC.getText()));
+        StreetNetworkController.getInstance().addProbabilityAD(row, column, Double.parseDouble(probAD.getText()));
+        if (SourceA.isSelected())
+        {
+            StreetNetworkController.getInstance().addSource(row, column, SourceDirection.North, Integer.parseInt(rateA.getText()));
+        }else
+        {
+            StreetNetworkController.getInstance().addFlowA(row, column, Integer.parseInt(rateA.getText()));
+        }
+        //B
+        StreetNetworkController.getInstance().addProbabilityBA(row, column, Double.parseDouble(probBA.getText()));
+        StreetNetworkController.getInstance().addProbabilityBC(row, column, Double.parseDouble(probBC.getText()));
+        StreetNetworkController.getInstance().addProbabilityBD(row, column, Double.parseDouble(probBD.getText()));
+        if (SourceB.isSelected())
+        {
+            StreetNetworkController.getInstance().addSource(row, column, SourceDirection.South, Integer.parseInt(rateB.getText()));
+        }else
+        {
+            StreetNetworkController.getInstance().addFlowB(row, column, Integer.parseInt(rateB.getText()));
+        }
+        //C
+        StreetNetworkController.getInstance().addProbabilityCA(row, column, Double.parseDouble(probCA.getText()));
+        StreetNetworkController.getInstance().addProbabilityCB(row, column, Double.parseDouble(probCB.getText()));
+        StreetNetworkController.getInstance().addProbabilityCD(row, column, Double.parseDouble(probCD.getText()));
+        if (SourceC.isSelected())
+        {
+            StreetNetworkController.getInstance().addSource(row, column, SourceDirection.West, Integer.parseInt(rateC.getText()));
+        }else
+        {
+            StreetNetworkController.getInstance().addFlowC(row, column, Integer.parseInt(rateC.getText()));
+        }
+        //D
+        StreetNetworkController.getInstance().addProbabilityDA(row, column, Double.parseDouble(probDA.getText()));
+        StreetNetworkController.getInstance().addProbabilityDB(row, column, Double.parseDouble(probDB.getText()));
+        StreetNetworkController.getInstance().addProbabilityDC(row, column, Double.parseDouble(probDC.getText()));
+        if (SourceD.isSelected())
+        {
+            StreetNetworkController.getInstance().addSource(row, column, SourceDirection.East, Integer.parseInt(rateD.getText()));
+        }else
+        {
+            StreetNetworkController.getInstance().addFlowD(row, column, Integer.parseInt(rateD.getText()));
+        }
+        
         this.dispose();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_okButtonActionPerformed
+
+    private void forAllButtonActionPerformed(ActionEvent evt)//GEN-FIRST:event_forAllButtonActionPerformed
+    {//GEN-HEADEREND:event_forAllButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_forAllButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private JButton jButton1;
+    private JCheckBox SourceA;
+    private JCheckBox SourceB;
+    private JCheckBox SourceC;
+    private JCheckBox SourceD;
+    private JButton forAllButton;
     private JLabel jLabel1;
     private JLabel jLabel10;
     private JLabel jLabel11;
@@ -357,6 +549,7 @@ public class JunctionSettingsDialog extends javax.swing.JDialog
     private JLabel jLabel7;
     private JLabel jLabel8;
     private JLabel jLabel9;
+    private JButton okButton;
     private JTextField probAB;
     private JTextField probAC;
     private JTextField probAD;
@@ -369,10 +562,10 @@ public class JunctionSettingsDialog extends javax.swing.JDialog
     private JTextField probDA;
     private JTextField probDB;
     private JTextField probDC;
-    private JTextField sourceRateA;
-    private JTextField sourceRateB;
-    private JTextField sourceRateC;
-    private JTextField sourceRateD;
-    private JLabel titleLable;
+    private JTextField rateA;
+    private JTextField rateB;
+    private JTextField rateC;
+    private JTextField rateD;
+    private JLabel titleLabel;
     // End of variables declaration//GEN-END:variables
 }

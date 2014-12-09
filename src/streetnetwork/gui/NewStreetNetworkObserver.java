@@ -1,4 +1,4 @@
-package streetnetwork.gui.popups;
+package streetnetwork.gui;
 
 /**
  *
