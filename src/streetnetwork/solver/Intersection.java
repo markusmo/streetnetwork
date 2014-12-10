@@ -1,4 +1,4 @@
-package streetnetwork.lpsolve;
+package streetnetwork.solver;
 
 public class Intersection {
 	public Direction A;

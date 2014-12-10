@@ -2,7 +2,7 @@ package streetnetwork.gui;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-import streetnetwork.viewmodels.Source;
+import streetnetwork.viewmodels.VSource;
 
 /**
  *
@@ -14,7 +14,7 @@ public class StreetLabel extends JLabel
     {
         vertical, horizontal
     };
-    private Source source;
+    private VSource source;
     private StreetType type;
     private boolean active;
     
@@ -49,7 +49,7 @@ public class StreetLabel extends JLabel
         return source != null;
     }
     
-    public Source getSource()
+    public VSource getSource()
     {
         if (this.isSource())
         {

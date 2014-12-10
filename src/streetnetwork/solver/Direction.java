@@ -1,4 +1,4 @@
-package streetnetwork.lpsolve;
+package streetnetwork.solver;
 
 public class Direction {
 	public String direction;

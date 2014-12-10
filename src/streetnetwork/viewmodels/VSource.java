@@ -3,11 +3,11 @@ package streetnetwork.viewmodels;
  *
  * @author Markus Mohanty <markus.mo at gmx.net>
  */
-public class Source
+public class VSource
 {
     private double rate;
 
-    public Source(double rate)
+    public VSource(double rate)
     {
         this.rate = rate;
     }

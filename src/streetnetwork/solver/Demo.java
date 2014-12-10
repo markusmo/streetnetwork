@@ -1,4 +1,4 @@
-package streetnetwork.lpsolve;
+package streetnetwork.solver;
 
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;

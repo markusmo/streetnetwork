@@ -22,7 +22,7 @@ import javax.swing.JScrollPane;
 import javax.swing.KeyStroke;
 import javax.swing.WindowConstants;
 import streetnetwork.controller.StreetNetworkController;
-import streetnetwork.viewmodels.Junction;
+import streetnetwork.viewmodels.VIntersection;
 
 /**
  *
@@ -273,7 +273,7 @@ public class StreetViewGUI extends javax.swing.JFrame implements NewStreetNetwor
                 System.out.println(" row "+row);
                 gbc.gridx = column;
                 gbc.gridy = row;
-                Junction junction = StreetNetworkController.getInstance().getJunction(row, column);
+                VIntersection junction = StreetNetworkController.getInstance().getJunction(row, column);
                 JunctionLabel junctionLabel = new JunctionLabel(junction.getId());
                 junctionLabel.setJunction(junction);
                 this.dropPanel.add(junctionLabel,gbc);

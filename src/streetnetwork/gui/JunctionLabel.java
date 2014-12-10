@@ -6,7 +6,7 @@ import java.net.URL;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.border.LineBorder;
-import streetnetwork.viewmodels.Junction;
+import streetnetwork.viewmodels.VIntersection;
 
 /**
  *
@@ -14,7 +14,7 @@ import streetnetwork.viewmodels.Junction;
  */
 public class JunctionLabel extends JLabel implements MouseListener
 {
-    private Junction junction;
+    private VIntersection junction;
     private boolean active;
     private int number;
     private int row;
@@ -33,12 +33,12 @@ public class JunctionLabel extends JLabel implements MouseListener
         this.setBorder(LineBorder.createBlackLineBorder());
     }
 
-    public Junction getJunction()
+    public VIntersection getJunction()
     {
         return junction;
     }
 
-    public void setJunction(Junction junction)
+    public void setJunction(VIntersection junction)
     {
         this.junction = junction;
     }

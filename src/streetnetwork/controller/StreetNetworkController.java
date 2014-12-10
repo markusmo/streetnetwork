@@ -1,8 +1,21 @@
 package streetnetwork.controller;
 
-import streetnetwork.viewmodels.Junction;
-import streetnetwork.viewmodels.Source;
-import streetnetwork.viewmodels.SourceDirection;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import lpsolve.LpSolve;
+import lpsolve.LpSolveException;
+import streetnetwork.solver.Intersection;
+import streetnetwork.solver.LpBuilder;
+import streetnetwork.solver.Source;
+import streetnetwork.solver.Street;
+import streetnetwork.viewmodels.VIntersection;
+import streetnetwork.viewmodels.VSource;
+import streetnetwork.viewmodels.VSourceDirection;
 
 /**
  *
@@ -10,7 +23,7 @@ import streetnetwork.viewmodels.SourceDirection;
  */
 public class StreetNetworkController 
 {
-    private static Junction[][] junctions;
+    private static VIntersection[][] vintersections;
     private static int rows;
     private static int columns;
     private static StreetNetworkController INSTANCE;
@@ -24,17 +37,140 @@ public class StreetNetworkController
         return INSTANCE;
     }
     
-    public static void initialize(int rows, int columns)
+    public static void initialize(int srows, int scolumns)
     {
-        junctions = new Junction[rows][columns];
+        rows = srows;
+        columns = scolumns;
+        vintersections = new VIntersection[srows][scolumns];
         int number = 0;
         for (int row = 0; row < rows; row++)
         {
             for (int column = 0; column < columns; column++)
             {
-                junctions[row][column] = new Junction(number++);
-                junctions[row][column].setDefault();
+                vintersections[row][column] = new VIntersection(number++);
+                vintersections[row][column].setDefault();
             }
+        }
+    }
+    
+    public String solveLP()
+    {
+        Intersection[][] intersections = new Intersection[rows][columns];
+        List<Street> streets = new ArrayList<Street>();
+        List<Source> sources = new ArrayList<Source>();
+        
+        //init intersections
+        for (int row = 0; row < rows; row++)
+        {
+            for (int column = 0; column < columns; column++)
+            {
+                intersections[row][column] = new Intersection(
+                        vintersections[row][column].getProbAD(), vintersections[row][column].getProbAC(), vintersections[row][column].getProbAB(), 
+                        vintersections[row][column].getProbBC(), vintersections[row][column].getProbBD(), vintersections[row][column].getProbBA(), 
+                        vintersections[row][column].getProbCA(), vintersections[row][column].getProbCB(), vintersections[row][column].getProbCD(), 
+                        vintersections[row][column].getProbDB(), vintersections[row][column].getProbDA(), vintersections[row][column].getProbDC());
+                //add sources
+                if (vintersections[row][column].getSourceNorth() != null)
+                {
+                    sources.add(new Source(intersections[row][column].A, vintersections[row][column].getSourceNorth().getRate()));
+                }
+                if (vintersections[row][column].getSourceEast()!= null)
+                {
+                    sources.add(new Source(intersections[row][column].C, vintersections[row][column].getSourceEast().getRate()));
+                }
+                if (vintersections[row][column].getSourceSouth()!= null)
+                {
+                    sources.add(new Source(intersections[row][column].B, vintersections[row][column].getSourceSouth().getRate()));
+                }
+                if (vintersections[row][column].getSourceWest()!= null)
+                {
+                    sources.add(new Source(intersections[row][column].D, vintersections[row][column].getSourceWest().getRate()));
+                }
+            }
+        }
+        
+        //add bidirectional streets
+        for (int row = 0; row < rows; row++)
+        {
+            for (int column = 0; column < columns; column++)
+            {
+                //only down and right
+                if (row == 0 && column == 0)
+                {
+                    //down
+                    streets.add(new Street(intersections[row][column].B, intersections[row+1][column].A, vintersections[row][column].getFlowB()));
+                    streets.add(new Street(intersections[row+1][column].A, intersections[row][column].B, vintersections[row + 1][column].getFlowA()));
+                    //right
+                    streets.add(new Street(intersections[row][column].D, intersections[row][column + 1].C, vintersections[row][column].getFlowD()));
+                    streets.add(new Street(intersections[row][column + 1].C, intersections[row][column].D, vintersections[row][column + 1].getFlowC()));
+                }
+                // only up and left
+                if (row == rows - 1 && column == columns - 1)
+                {
+                    streets.add(new Street(intersections[row][column].A, intersections[row-1][column].B, vintersections[row][column].getFlowA()));
+                    streets.add(new Street(intersections[row-1][column].B, intersections[row][column].A, vintersections[row-1][column].getFlowB()));
+                    
+                    streets.add(new Street(intersections[row][column].C, intersections[row][column-1].D, vintersections[row][column].getFlowC()));
+                    streets.add(new Street(intersections[row][column-1].D, intersections[row][column].C, vintersections[row][column-1].getFlowD()));
+                }
+                
+                //all directions
+                if (row < rows -1 && row > 0 && column < column -1 && column > 0)
+                {
+                    //down
+                    streets.add(new Street(intersections[row][column].B, intersections[row+1][column].A, vintersections[row][column].getFlowB()));
+                    streets.add(new Street(intersections[row+1][column].A, intersections[row][column].B, vintersections[row + 1][column].getFlowA()));
+                    //right
+                    streets.add(new Street(intersections[row][column].D, intersections[row][column + 1].C, vintersections[row][column].getFlowD()));
+                    streets.add(new Street(intersections[row][column + 1].C, intersections[row][column].D, vintersections[row][column + 1].getFlowC()));
+                    //up
+                    streets.add(new Street(intersections[row][column].A, intersections[row-1][column].B, vintersections[row][column].getFlowA()));
+                    streets.add(new Street(intersections[row-1][column].B, intersections[row][column].A, vintersections[row-1][column].getFlowB()));
+                    //left
+                    streets.add(new Street(intersections[row][column].C, intersections[row][column-1].D, vintersections[row][column].getFlowC()));
+                    streets.add(new Street(intersections[row][column-1].D, intersections[row][column].C, vintersections[row][column-1].getFlowD()));
+                }
+            }
+        }
+        String lpString = new LpBuilder().createLp(rows, columns, intersections, streets, sources);
+        try
+        {
+            String filename = "model.lp";
+            PrintWriter writer = new PrintWriter(filename, "UTF-8");
+            writer.print(lpString);
+            writer.close();
+            
+            LpSolve lpProblem = LpSolve.readLp(filename, LpSolve.NORMAL, "intersection model");
+            lpProblem.setUseNames(true, true);
+            lpProblem.solve();
+            
+            StringBuilder builder = new StringBuilder();
+            builder.append("Value of objective function ");
+            builder.append(lpProblem.getObjective());
+            builder.append("\n\n");
+            builder.append("Value of o5B ");
+            double[] var = lpProblem.getPtrVariables();
+            int index = lpProblem.getNameindex("o5B", false);
+            builder.append("Value of o5B ");
+            builder.append(index);
+            builder.append(" ");
+            builder.append(var[index - 1]);
+            return builder.toString();
+        }
+        catch (LpSolveException ex)
+        {
+            Logger.getLogger(StreetNetworkController.class.getName()).log(Level.SEVERE, null, ex);
+            return "lpbuilder problem while creating lp";
+        }
+        catch (FileNotFoundException ex)
+        {
+            Logger.getLogger(StreetNetworkController.class.getName()).log(Level.SEVERE, null, ex);
+            return "printwriter problem file could not be created";
+        }
+        catch (UnsupportedEncodingException ex)
+        {
+            Logger.getLogger(StreetNetworkController.class.getName()).log(Level.SEVERE, null, ex);
+            return "encoding problem while creating file";
         }
     }
     
@@ -50,118 +186,118 @@ public class StreetNetworkController
     
     public void addJunctions(int id, int row, int column)
     {
-        junctions[row][column] = new Junction(id);
+        vintersections[row][column] = new VIntersection(id);
     }
     
     //A
     public void addProbabilityAB(int row, int column, double prob)
     {
-        junctions[row][column].setProbAB(prob);
+        vintersections[row][column].setProbAB(prob);
     }
     
     public void addProbabilityAC(int row, int column, double prob)
     {
         
         
-        junctions[row][column].setProbAC(prob);
+        vintersections[row][column].setProbAC(prob);
     }
     
     public void addProbabilityAD(int row, int column, double prob)
     {
-        junctions[row][column].setProbAD(prob);
+        vintersections[row][column].setProbAD(prob);
     }
     
     //B
     public void addProbabilityBA(int row, int column, double prob)
     {
-        junctions[row][column].setProbBA(prob);
+        vintersections[row][column].setProbBA(prob);
     }
     
     public void addProbabilityBC(int row, int column, double prob)
     {
-        junctions[row][column].setProbBC(prob);
+        vintersections[row][column].setProbBC(prob);
     }
     
     public void addProbabilityBD(int row, int column, double prob)
     {
-        junctions[row][column].setProbBD(prob);
+        vintersections[row][column].setProbBD(prob);
     }
     
     //C
     public void addProbabilityCA(int row, int column, double prob)
     {
-        junctions[row][column].setProbCA(prob);
+        vintersections[row][column].setProbCA(prob);
     }
     
     public void addProbabilityCB(int row, int column, double prob)
     {
-        junctions[row][column].setProbCB(prob);
+        vintersections[row][column].setProbCB(prob);
     }
     
     public void addProbabilityCD(int row, int column, double prob)
     {
-        junctions[row][column].setProbCD(prob);
+        vintersections[row][column].setProbCD(prob);
     }
     
     //D
     public void addProbabilityDA(int row, int column, double prob)
     {
-        junctions[row][column].setProbDA(prob);
+        vintersections[row][column].setProbDA(prob);
     }
     
     public void addProbabilityDB(int row, int column, double prob)
     {
-        junctions[row][column].setProbDB(prob);
+        vintersections[row][column].setProbDB(prob);
     }
     
     public void addProbabilityDC(int row, int column, double prob)
     {
-        junctions[row][column].setProbDC(prob);
+        vintersections[row][column].setProbDC(prob);
     }
     
     public void addFlowA(int row, int column, int flow)
     {
-        junctions[row][column].setFlowA(flow);
+        vintersections[row][column].setFlowA(flow);
     }
     
     public void addFlowB(int row, int column, int flow)
     {
-        junctions[row][column].setFlowB(flow);
+        vintersections[row][column].setFlowB(flow);
     }
     
     public void addFlowC(int row, int column, int flow)
     {
-        junctions[row][column].setFlowC(flow);
+        vintersections[row][column].setFlowC(flow);
     }
     
     public void addFlowD(int row, int column, int flow)
     {
-        junctions[row][column].setFlowD(flow);
+        vintersections[row][column].setFlowD(flow);
     }
     
-    public void addSource(int row, int column, SourceDirection direction, double rate)
+    public void addSource(int row, int column, VSourceDirection direction, double rate)
     {
-        Junction junction = junctions[row][column];
+        VIntersection junction = vintersections[row][column];
         switch(direction)
         {
             case North:
-                junction.setSourceNorth(new Source(rate));
+                junction.setSourceNorth(new VSource(rate));
                 break;
             case East:
-                junction.setSourceEast(new Source(rate));
+                junction.setSourceEast(new VSource(rate));
                 break;
             case South:
-                junction.setSourceSouth(new Source(rate));
+                junction.setSourceSouth(new VSource(rate));
                 break;
             case West:
-                junction.setSourceWest(new Source(rate));
+                junction.setSourceWest(new VSource(rate));
                 break;
         }
     }
     
-    public Junction getJunction(int row, int column)
+    public VIntersection getJunction(int row, int column)
     {
-        return junctions[row][column];
+        return vintersections[row][column];
     }
 }
             

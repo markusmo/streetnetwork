@@ -1,4 +1,4 @@
-package streetnetwork.lpsolve;
+package streetnetwork.solver;
 
 
 public class Tuple<S1, S2> {

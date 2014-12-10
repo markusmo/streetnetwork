@@ -1,4 +1,4 @@
-package streetnetwork.lpsolve;
+package streetnetwork.solver;
 
 import java.util.LinkedList;
 import java.util.List;

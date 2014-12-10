@@ -20,7 +20,7 @@ import javax.swing.LayoutStyle;
 import javax.swing.WindowConstants;
 import org.omg.CosNaming.BindingType;
 import streetnetwork.controller.StreetNetworkController;
-import streetnetwork.viewmodels.SourceDirection;
+import streetnetwork.viewmodels.VSourceDirection;
 
 /**
  *
@@ -480,7 +480,7 @@ public class JunctionSettingsDialog extends JDialog
         StreetNetworkController.getInstance().addProbabilityAD(row, column, Double.parseDouble(probAD.getText()));
         if (SourceA.isSelected())
         {
-            StreetNetworkController.getInstance().addSource(row, column, SourceDirection.North, Integer.parseInt(rateA.getText()));
+            StreetNetworkController.getInstance().addSource(row, column, VSourceDirection.North, Integer.parseInt(rateA.getText()));
         }else
         {
             StreetNetworkController.getInstance().addFlowA(row, column, Integer.parseInt(rateA.getText()));
@@ -491,7 +491,7 @@ public class JunctionSettingsDialog extends JDialog
         StreetNetworkController.getInstance().addProbabilityBD(row, column, Double.parseDouble(probBD.getText()));
         if (SourceB.isSelected())
         {
-            StreetNetworkController.getInstance().addSource(row, column, SourceDirection.South, Integer.parseInt(rateB.getText()));
+            StreetNetworkController.getInstance().addSource(row, column, VSourceDirection.South, Integer.parseInt(rateB.getText()));
         }else
         {
             StreetNetworkController.getInstance().addFlowB(row, column, Integer.parseInt(rateB.getText()));
@@ -502,7 +502,7 @@ public class JunctionSettingsDialog extends JDialog
         StreetNetworkController.getInstance().addProbabilityCD(row, column, Double.parseDouble(probCD.getText()));
         if (SourceC.isSelected())
         {
-            StreetNetworkController.getInstance().addSource(row, column, SourceDirection.West, Integer.parseInt(rateC.getText()));
+            StreetNetworkController.getInstance().addSource(row, column, VSourceDirection.West, Integer.parseInt(rateC.getText()));
         }else
         {
             StreetNetworkController.getInstance().addFlowC(row, column, Integer.parseInt(rateC.getText()));
@@ -513,7 +513,7 @@ public class JunctionSettingsDialog extends JDialog
         StreetNetworkController.getInstance().addProbabilityDC(row, column, Double.parseDouble(probDC.getText()));
         if (SourceD.isSelected())
         {
-            StreetNetworkController.getInstance().addSource(row, column, SourceDirection.East, Integer.parseInt(rateD.getText()));
+            StreetNetworkController.getInstance().addSource(row, column, VSourceDirection.East, Integer.parseInt(rateD.getText()));
         }else
         {
             StreetNetworkController.getInstance().addFlowD(row, column, Integer.parseInt(rateD.getText()));

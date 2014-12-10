@@ -4,7 +4,7 @@ package streetnetwork.viewmodels;
  *
  * @author Markus Mohanty <markus.mo at gmx.net>
  */
-public class Junction implements IStreetNetworkItem
+public class VIntersection
 {
     private int id;
     //A
@@ -28,12 +28,12 @@ public class Junction implements IStreetNetworkItem
     private double probDC;
     private int flowD;
     
-    private Source sourceNorth;
-    private Source sourceSouth;
-    private Source sourceWest;
-    private Source sourceEast;
+    private VSource sourceNorth;
+    private VSource sourceSouth;
+    private VSource sourceWest;
+    private VSource sourceEast;
 
-    public Junction(int id)
+    public VIntersection(int id)
     {
         this.id = id;
         this.setDefault();
@@ -204,42 +204,42 @@ public class Junction implements IStreetNetworkItem
         this.probDC = probDC;
     }
 
-    public Source getSourceNorth()
+    public VSource getSourceNorth()
     {
         return sourceNorth;
     }
 
-    public void setSourceNorth(Source sourceNorth)
+    public void setSourceNorth(VSource sourceNorth)
     {
         this.sourceNorth = sourceNorth;
     }
 
-    public Source getSourceSouth()
+    public VSource getSourceSouth()
     {
         return sourceSouth;
     }
 
-    public void setSourceSouth(Source sourceSouth)
+    public void setSourceSouth(VSource sourceSouth)
     {
         this.sourceSouth = sourceSouth;
     }
 
-    public Source getSourceWest()
+    public VSource getSourceWest()
     {
         return sourceWest;
     }
 
-    public void setSourceWest(Source sourceWest)
+    public void setSourceWest(VSource sourceWest)
     {
         this.sourceWest = sourceWest;
     }
 
-    public Source getSourceEast()
+    public VSource getSourceEast()
     {
         return sourceEast;
     }
 
-    public void setSourceEast(Source sourceEast)
+    public void setSourceEast(VSource sourceEast)
     {
         this.sourceEast = sourceEast;
     }
