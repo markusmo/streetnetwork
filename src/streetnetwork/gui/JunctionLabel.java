@@ -1,5 +1,6 @@
 package streetnetwork.gui;
 
+import com.sun.rowset.internal.Row;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.net.URL;
@@ -20,7 +21,7 @@ public class JunctionLabel extends JLabel implements MouseListener
     private int row;
     private int column;
     
-    public JunctionLabel(int number)
+    public JunctionLabel(int number, int row, int column)
     {
         URL resource = this.getClass().getResource("images/junction_inactive.png");
         this.setIcon(new ImageIcon(resource));
@@ -47,12 +48,7 @@ public class JunctionLabel extends JLabel implements MouseListener
     {
         return number;
     }
-
-    public void setNumber(int number)
-    {
-        this.number = number;
-    }
-
+    
     @Override
     public void mouseClicked(MouseEvent e)
     {
@@ -64,7 +60,7 @@ public class JunctionLabel extends JLabel implements MouseListener
             this.revalidate();
             this.active = !this.active;
             
-            JunctionSettingsDialog dialog = new JunctionSettingsDialog(null, true, number);
+            JunctionSettingsDialog dialog = new JunctionSettingsDialog(null, true, number, row, column);
             dialog.setVisible(true);
         }
         else

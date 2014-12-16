@@ -18,7 +18,6 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle;
 import javax.swing.WindowConstants;
-import org.omg.CosNaming.BindingType;
 import streetnetwork.controller.StreetNetworkController;
 import streetnetwork.viewmodels.VSourceDirection;
 
@@ -32,27 +31,21 @@ public class JunctionSettingsDialog extends JDialog
     private int row;
     private int column;
     
-    public void setRow(int row)
-    {
-        this.row = row;
-    }
-    
-    public void setColumn(int column)
-    {
-        this.column = column;
-    }
-    
     /**
      * Creates new form JunctionSettingsDialog
      * @param parent
      * @param modal
      * @param number
+     * @param row
+     * @param column
      */
-    public JunctionSettingsDialog(java.awt.Frame parent, boolean modal, int number)
+    public JunctionSettingsDialog(java.awt.Frame parent, boolean modal, int number, int row, int column)
     {
         super(parent, modal);
         initComponents();
         this.number = number;
+        this.row = row;
+        this.column = column;
         String text = this.titleLabel.getText();
         this.titleLabel.setText(text + " " + number);
         URL resource = this.getClass().getResource("images/junction.png");
@@ -474,57 +467,15 @@ public class JunctionSettingsDialog extends JDialog
 
     private void okButtonActionPerformed(ActionEvent evt)//GEN-FIRST:event_okButtonActionPerformed
     {//GEN-HEADEREND:event_okButtonActionPerformed
-        //A
-        StreetNetworkController.getInstance().addProbabilityAB(row, column, Double.parseDouble(probAB.getText()));
-        StreetNetworkController.getInstance().addProbabilityAC(row, column, Double.parseDouble(probAC.getText()));
-        StreetNetworkController.getInstance().addProbabilityAD(row, column, Double.parseDouble(probAD.getText()));
-        if (SourceA.isSelected())
-        {
-            StreetNetworkController.getInstance().addSource(row, column, VSourceDirection.North, Integer.parseInt(rateA.getText()));
-        }else
-        {
-            StreetNetworkController.getInstance().addFlowA(row, column, Integer.parseInt(rateA.getText()));
-        }
-        //B
-        StreetNetworkController.getInstance().addProbabilityBA(row, column, Double.parseDouble(probBA.getText()));
-        StreetNetworkController.getInstance().addProbabilityBC(row, column, Double.parseDouble(probBC.getText()));
-        StreetNetworkController.getInstance().addProbabilityBD(row, column, Double.parseDouble(probBD.getText()));
-        if (SourceB.isSelected())
-        {
-            StreetNetworkController.getInstance().addSource(row, column, VSourceDirection.South, Integer.parseInt(rateB.getText()));
-        }else
-        {
-            StreetNetworkController.getInstance().addFlowB(row, column, Integer.parseInt(rateB.getText()));
-        }
-        //C
-        StreetNetworkController.getInstance().addProbabilityCA(row, column, Double.parseDouble(probCA.getText()));
-        StreetNetworkController.getInstance().addProbabilityCB(row, column, Double.parseDouble(probCB.getText()));
-        StreetNetworkController.getInstance().addProbabilityCD(row, column, Double.parseDouble(probCD.getText()));
-        if (SourceC.isSelected())
-        {
-            StreetNetworkController.getInstance().addSource(row, column, VSourceDirection.West, Integer.parseInt(rateC.getText()));
-        }else
-        {
-            StreetNetworkController.getInstance().addFlowC(row, column, Integer.parseInt(rateC.getText()));
-        }
-        //D
-        StreetNetworkController.getInstance().addProbabilityDA(row, column, Double.parseDouble(probDA.getText()));
-        StreetNetworkController.getInstance().addProbabilityDB(row, column, Double.parseDouble(probDB.getText()));
-        StreetNetworkController.getInstance().addProbabilityDC(row, column, Double.parseDouble(probDC.getText()));
-        if (SourceD.isSelected())
-        {
-            StreetNetworkController.getInstance().addSource(row, column, VSourceDirection.East, Integer.parseInt(rateD.getText()));
-        }else
-        {
-            StreetNetworkController.getInstance().addFlowD(row, column, Integer.parseInt(rateD.getText()));
-        }
-        
+        this.setJunctionSettings();
         this.dispose();
     }//GEN-LAST:event_okButtonActionPerformed
 
     private void forAllButtonActionPerformed(ActionEvent evt)//GEN-FIRST:event_forAllButtonActionPerformed
     {//GEN-HEADEREND:event_forAllButtonActionPerformed
-        // TODO add your handling code here:
+        this.setJunctionSettings();
+        StreetNetworkController.getInstance().forAll(row, column);
+        this.dispose();
     }//GEN-LAST:event_forAllButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -568,4 +519,52 @@ public class JunctionSettingsDialog extends JDialog
     private JTextField rateD;
     private JLabel titleLabel;
     // End of variables declaration//GEN-END:variables
+
+    private void setJunctionSettings()
+    {
+        //A
+        StreetNetworkController.getInstance().addProbabilityAB(row, column, Double.parseDouble(probAB.getText()));
+        StreetNetworkController.getInstance().addProbabilityAC(row, column, Double.parseDouble(probAC.getText()));
+        StreetNetworkController.getInstance().addProbabilityAD(row, column, Double.parseDouble(probAD.getText()));
+        if (SourceA.isSelected())
+        {
+            StreetNetworkController.getInstance().addSource(row, column, VSourceDirection.North, Double.parseDouble(rateA.getText()));
+        }else
+        {
+            StreetNetworkController.getInstance().addFlowA(row, column, Double.parseDouble(rateA.getText()));
+        }
+        //B
+        StreetNetworkController.getInstance().addProbabilityBA(row, column, Double.parseDouble(probBA.getText()));
+        StreetNetworkController.getInstance().addProbabilityBC(row, column, Double.parseDouble(probBC.getText()));
+        StreetNetworkController.getInstance().addProbabilityBD(row, column, Double.parseDouble(probBD.getText()));
+        if (SourceB.isSelected())
+        {
+            StreetNetworkController.getInstance().addSource(row, column, VSourceDirection.South, Double.parseDouble(rateB.getText()));
+        }else
+        {
+            StreetNetworkController.getInstance().addFlowB(row, column, Double.parseDouble(rateB.getText()));
+        }
+        //C
+        StreetNetworkController.getInstance().addProbabilityCA(row, column, Double.parseDouble(probCA.getText()));
+        StreetNetworkController.getInstance().addProbabilityCB(row, column, Double.parseDouble(probCB.getText()));
+        StreetNetworkController.getInstance().addProbabilityCD(row, column, Double.parseDouble(probCD.getText()));
+        if (SourceC.isSelected())
+        {
+            StreetNetworkController.getInstance().addSource(row, column, VSourceDirection.West, Double.parseDouble(rateC.getText()));
+        }else
+        {
+            StreetNetworkController.getInstance().addFlowC(row, column, Double.parseDouble(rateC.getText()));
+        }
+        //D
+        StreetNetworkController.getInstance().addProbabilityDA(row, column, Double.parseDouble(probDA.getText()));
+        StreetNetworkController.getInstance().addProbabilityDB(row, column, Double.parseDouble(probDB.getText()));
+        StreetNetworkController.getInstance().addProbabilityDC(row, column, Double.parseDouble(probDC.getText()));
+        if (SourceD.isSelected())
+        {
+            StreetNetworkController.getInstance().addSource(row, column, VSourceDirection.East, Double.parseDouble(rateD.getText()));
+        }else
+        {
+            StreetNetworkController.getInstance().addFlowD(row, column, Double.parseDouble(rateD.getText()));
+        }
+    }
 }

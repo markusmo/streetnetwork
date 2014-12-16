@@ -11,22 +11,22 @@ public class VIntersection
     private double probAB;
     private double probAC;
     private double probAD;
-    private int flowA;
+    private double flowA;
     //B
     private double probBA;
     private double probBC;
     private double probBD;
-    private int flowB;
+    private double flowB;
     //C
     private double probCA;
     private double probCB;
     private double probCD;
-    private int flowC;
+    private double flowC;
     //D
     private double probDA;
     private double probDB;
     private double probDC;
-    private int flowD;
+    private double flowD;
     
     private VSource sourceNorth;
     private VSource sourceSouth;
@@ -44,42 +44,42 @@ public class VIntersection
         return id;
     }
 
-    public int getFlowA()
+    public double getFlowA()
     {
         return flowA;
     }
 
-    public void setFlowA(int flowA)
+    public void setFlowA(double flowA)
     {
         this.flowA = flowA;
     }
 
-    public int getFlowB()
+    public double getFlowB()
     {
         return flowB;
     }
 
-    public void setFlowB(int flowB)
+    public void setFlowB(double flowB)
     {
         this.flowB = flowB;
     }
 
-    public int getFlowC()
+    public double getFlowC()
     {
         return flowC;
     }
 
-    public void setFlowC(int flowC)
+    public void setFlowC(double flowC)
     {
         this.flowC = flowC;
     }
 
-    public int getFlowD()
+    public double getFlowD()
     {
         return flowD;
     }
 
-    public void setFlowD(int flowD)
+    public void setFlowD(double flowD)
     {
         this.flowD = flowD;
     }
@@ -250,21 +250,21 @@ public class VIntersection
         this.probAB = 0.5;
         this.probAC = 0.25;
         this.probAD = 0.25;
-        this.flowA = 1;
+        this.flowA = 0.3;
         
         this.probBA = 0.25;
         this.probBC = 0.5;
         this.probBD = 0.25;
-        this.flowB = 1;
+        this.flowB = 0.3;
         
         this.probCA = 0.25;
         this.probCB = 0.25;
         this.probCD = 0.5;
-        this.flowC = 1;
+        this.flowC = 0.3;
         
         this.probDA = 0.25;
         this.probDB = 0.25;
         this.probDC = 0.5;
-        this.flowD = 1;
+        this.flowD = 0.3;
     }
 }
