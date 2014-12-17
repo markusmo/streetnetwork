@@ -32,11 +32,23 @@ public class VIntersection
     private VSource sourceSouth;
     private VSource sourceWest;
     private VSource sourceEast;
+    
+    private boolean active;
 
     public VIntersection(int id)
     {
         this.id = id;
         this.setDefault();
+    }
+
+    public void setActive(boolean active)
+    {
+        this.active = active;
+    }
+
+    public boolean isActive()
+    {
+        return active;
     }
     
     public int getId()

@@ -58,6 +58,7 @@ public class JunctionLabel extends JLabel implements MouseListener
             this.repaint();
             this.revalidate();
             this.active = !this.active;
+            this.junction.setActive(active);
             
             JunctionSettingsDialog dialog = new JunctionSettingsDialog(null, true, number, row, column);
             dialog.setVisible(true);
@@ -69,8 +70,14 @@ public class JunctionLabel extends JLabel implements MouseListener
             this.repaint();
             this.revalidate();
             this.active = !this.active;
+            this.junction.setActive(active);
             this.junction.setDefault();
         }
+    }
+
+    public boolean isActive()
+    {
+        return active;
     }
 
     @Override

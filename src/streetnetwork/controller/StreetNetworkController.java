@@ -64,27 +64,30 @@ public class StreetNetworkController
         {
             for (int column = 0; column < columns; column++)
             {
-                intersections[row][column] = new Intersection(
-                        vintersections[row][column].getProbAD(), vintersections[row][column].getProbAC(), vintersections[row][column].getProbAB(),
-                        vintersections[row][column].getProbBC(), vintersections[row][column].getProbBD(), vintersections[row][column].getProbBA(),
-                        vintersections[row][column].getProbCA(), vintersections[row][column].getProbCB(), vintersections[row][column].getProbCD(),
-                        vintersections[row][column].getProbDB(), vintersections[row][column].getProbDA(), vintersections[row][column].getProbDC());
-                //add sources
-                if (vintersections[row][column].getSourceNorth() != null)
+                if (vintersections[row][column].isActive())
                 {
-                    sources.add(new Source(intersections[row][column].A, vintersections[row][column].getSourceNorth().getRate()));
-                }
-                if (vintersections[row][column].getSourceEast() != null)
-                {
-                    sources.add(new Source(intersections[row][column].C, vintersections[row][column].getSourceEast().getRate()));
-                }
-                if (vintersections[row][column].getSourceSouth() != null)
-                {
-                    sources.add(new Source(intersections[row][column].B, vintersections[row][column].getSourceSouth().getRate()));
-                }
-                if (vintersections[row][column].getSourceWest() != null)
-                {
-                    sources.add(new Source(intersections[row][column].D, vintersections[row][column].getSourceWest().getRate()));
+                    intersections[row][column] = new Intersection(
+                            vintersections[row][column].getProbAD(), vintersections[row][column].getProbAC(), vintersections[row][column].getProbAB(),
+                            vintersections[row][column].getProbBC(), vintersections[row][column].getProbBD(), vintersections[row][column].getProbBA(),
+                            vintersections[row][column].getProbCA(), vintersections[row][column].getProbCB(), vintersections[row][column].getProbCD(),
+                            vintersections[row][column].getProbDB(), vintersections[row][column].getProbDA(), vintersections[row][column].getProbDC());
+                    //add sources
+                    if (vintersections[row][column].getSourceNorth() != null)
+                    {
+                        sources.add(new Source(intersections[row][column].A, vintersections[row][column].getSourceNorth().getRate()));
+                    }
+                    if (vintersections[row][column].getSourceEast() != null)
+                    {
+                        sources.add(new Source(intersections[row][column].C, vintersections[row][column].getSourceEast().getRate()));
+                    }
+                    if (vintersections[row][column].getSourceSouth() != null)
+                    {
+                        sources.add(new Source(intersections[row][column].B, vintersections[row][column].getSourceSouth().getRate()));
+                    }
+                    if (vintersections[row][column].getSourceWest() != null)
+                    {
+                        sources.add(new Source(intersections[row][column].D, vintersections[row][column].getSourceWest().getRate()));
+                    }
                 }
             }
         }
@@ -94,41 +97,60 @@ public class StreetNetworkController
         {
             for (int column = 0; column < columns; column++)
             {
-                //only down and right
-                if (row == 0 && column == 0)
+                if (vintersections[row][column].isActive())
                 {
-                    //down
-                    streets.add(new Street(intersections[row][column].B, intersections[row + 1][column].A, vintersections[row][column].getFlowB()));
-                    streets.add(new Street(intersections[row + 1][column].A, intersections[row][column].B, vintersections[row + 1][column].getFlowA()));
-                    //right
-                    streets.add(new Street(intersections[row][column].D, intersections[row][column + 1].C, vintersections[row][column].getFlowD()));
-                    streets.add(new Street(intersections[row][column + 1].C, intersections[row][column].D, vintersections[row][column + 1].getFlowC()));
-                }
-                // only up and left
-                if (row == rows - 1 && column == columns - 1)
-                {
-                    streets.add(new Street(intersections[row][column].A, intersections[row - 1][column].B, vintersections[row][column].getFlowA()));
-                    streets.add(new Street(intersections[row - 1][column].B, intersections[row][column].A, vintersections[row - 1][column].getFlowB()));
+                    //check for neighbors
+                    //only down and right
+                    if (row == 0 && column == 0)
+                    {
 
-                    streets.add(new Street(intersections[row][column].C, intersections[row][column - 1].D, vintersections[row][column].getFlowC()));
-                    streets.add(new Street(intersections[row][column - 1].D, intersections[row][column].C, vintersections[row][column - 1].getFlowD()));
-                }
+                        if (intersections[row + 1][column] != null
+                                && intersections[row][column + 1] != null)
+                        {
+                            //down
+                            streets.add(new Street(intersections[row][column].B, intersections[row + 1][column].A, vintersections[row][column].getFlowB()));
+                            streets.add(new Street(intersections[row + 1][column].A, intersections[row][column].B, vintersections[row + 1][column].getFlowA()));
+                            //right
+                            streets.add(new Street(intersections[row][column].D, intersections[row][column + 1].C, vintersections[row][column].getFlowD()));
+                            streets.add(new Street(intersections[row][column + 1].C, intersections[row][column].D, vintersections[row][column + 1].getFlowC()));
 
-                //all directions
-                if (row < rows - 1 && row > 0 && column < column - 1 && column > 0)
-                {
-                    //down
-                    streets.add(new Street(intersections[row][column].B, intersections[row + 1][column].A, vintersections[row][column].getFlowB()));
-                    streets.add(new Street(intersections[row + 1][column].A, intersections[row][column].B, vintersections[row + 1][column].getFlowA()));
-                    //right
-                    streets.add(new Street(intersections[row][column].D, intersections[row][column + 1].C, vintersections[row][column].getFlowD()));
-                    streets.add(new Street(intersections[row][column + 1].C, intersections[row][column].D, vintersections[row][column + 1].getFlowC()));
-                    //up
-                    streets.add(new Street(intersections[row][column].A, intersections[row - 1][column].B, vintersections[row][column].getFlowA()));
-                    streets.add(new Street(intersections[row - 1][column].B, intersections[row][column].A, vintersections[row - 1][column].getFlowB()));
-                    //left
-                    streets.add(new Street(intersections[row][column].C, intersections[row][column - 1].D, vintersections[row][column].getFlowC()));
-                    streets.add(new Street(intersections[row][column - 1].D, intersections[row][column].C, vintersections[row][column - 1].getFlowD()));
+                        }
+                    }
+                    // only up and left
+                    if (row == rows - 1 && column == columns - 1)
+                    {
+                        if (intersections[row - 1][column] != null
+                                && intersections[row][column - 1] != null)
+                        {
+                            streets.add(new Street(intersections[row][column].A, intersections[row - 1][column].B, vintersections[row][column].getFlowA()));
+                            streets.add(new Street(intersections[row - 1][column].B, intersections[row][column].A, vintersections[row - 1][column].getFlowB()));
+
+                            streets.add(new Street(intersections[row][column].C, intersections[row][column - 1].D, vintersections[row][column].getFlowC()));
+                            streets.add(new Street(intersections[row][column - 1].D, intersections[row][column].C, vintersections[row][column - 1].getFlowD()));
+                        }
+                    }
+                    //all directions
+                    if (row < rows - 1 && row > 0 && column < column - 1 && column > 0)
+                    {
+                        if (intersections[row + 1][column] != null
+                                && intersections[row][column + 1] != null
+                                && intersections[row - 1][column] != null
+                                && intersections[row][column - 1] != null)
+                        {
+                            //down
+                            streets.add(new Street(intersections[row][column].B, intersections[row + 1][column].A, vintersections[row][column].getFlowB()));
+                            streets.add(new Street(intersections[row + 1][column].A, intersections[row][column].B, vintersections[row + 1][column].getFlowA()));
+                            //right
+                            streets.add(new Street(intersections[row][column].D, intersections[row][column + 1].C, vintersections[row][column].getFlowD()));
+                            streets.add(new Street(intersections[row][column + 1].C, intersections[row][column].D, vintersections[row][column + 1].getFlowC()));
+                            //up
+                            streets.add(new Street(intersections[row][column].A, intersections[row - 1][column].B, vintersections[row][column].getFlowA()));
+                            streets.add(new Street(intersections[row - 1][column].B, intersections[row][column].A, vintersections[row - 1][column].getFlowB()));
+                            //left
+                            streets.add(new Street(intersections[row][column].C, intersections[row][column - 1].D, vintersections[row][column].getFlowC()));
+                            streets.add(new Street(intersections[row][column - 1].D, intersections[row][column].C, vintersections[row][column - 1].getFlowD()));
+                        }
+                    }
                 }
             }
         }
@@ -138,9 +160,7 @@ public class StreetNetworkController
         PrintWriter writer = new PrintWriter(filename, "UTF-8");
         writer.print(lpString);
         writer.close();
-        
-        
-        
+
         LpSolve lpProblem = LpSolve.readLp(filename, LpSolve.NORMAL, "intersection model");
         lpProblem.setUseNames(true, true);
         lpProblem.solve();
@@ -150,6 +170,7 @@ public class StreetNetworkController
         builder.append(lpProblem.getObjective());
         builder.append("\n\n");
         double[] var = lpProblem.getPtrVariables();
+        //get the Is
         int index = lpProblem.getNameindex("o5B", false);
         builder.append("Value of o5B ");
         builder.append(index);
@@ -168,55 +189,55 @@ public class StreetNetworkController
                 addFlowB(irow, icolumn, vintersections[row][column].getFlowB());
                 addFlowC(irow, icolumn, vintersections[row][column].getFlowC());
                 addFlowD(irow, icolumn, vintersections[row][column].getFlowD());
-                
+
                 //A
                 addProbabilityAB(irow, icolumn, vintersections[row][column].getProbAB());
                 addProbabilityAC(irow, icolumn, vintersections[row][column].getProbAB());
                 addProbabilityAD(irow, icolumn, vintersections[row][column].getProbAB());
-                
+
                 //B
                 addProbabilityBA(irow, icolumn, vintersections[row][column].getProbAB());
                 addProbabilityBC(irow, icolumn, vintersections[row][column].getProbAB());
                 addProbabilityBD(irow, icolumn, vintersections[row][column].getProbAB());
-                
+
                 //C
                 addProbabilityCA(irow, icolumn, vintersections[row][column].getProbAB());
                 addProbabilityCB(irow, icolumn, vintersections[row][column].getProbAB());
                 addProbabilityCD(irow, icolumn, vintersections[row][column].getProbAB());
-                
+
                 //D
                 addProbabilityDA(irow, icolumn, vintersections[row][column].getProbAB());
                 addProbabilityDB(irow, icolumn, vintersections[row][column].getProbAB());
                 addProbabilityDC(irow, icolumn, vintersections[row][column].getProbAB());
-                
+
                 if (vintersections[row][column].getSourceNorth() != null)
                 {
                     addSource(irow, icolumn, VSourceDirection.North, vintersections[row][column].getSourceNorth().getRate());
                 }
-                
-                if (vintersections[row][column].getSourceEast()!= null)
+
+                if (vintersections[row][column].getSourceEast() != null)
                 {
                     addSource(irow, icolumn, VSourceDirection.East, vintersections[row][column].getSourceEast().getRate());
                 }
-                
-                if (vintersections[row][column].getSourceSouth()!= null)
+
+                if (vintersections[row][column].getSourceSouth() != null)
                 {
                     addSource(irow, icolumn, VSourceDirection.South, vintersections[row][column].getSourceSouth().getRate());
                 }
-                
-                if (vintersections[row][column].getSourceWest()!= null)
+
+                if (vintersections[row][column].getSourceWest() != null)
                 {
                     addSource(irow, icolumn, VSourceDirection.West, vintersections[row][column].getSourceWest().getRate());
                 }
             }
         }
     }
-    
+
     public int getRows()
     {
         return rows;
     }
-    
+
     public int getColumns()
     {
         return columns;
