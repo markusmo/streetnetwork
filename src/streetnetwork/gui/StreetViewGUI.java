@@ -13,6 +13,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.util.logging.Level;
@@ -201,6 +202,12 @@ public class StreetViewGUI extends javax.swing.JFrame implements NewStreetNetwor
             SolutionDialog sd = new SolutionDialog(this, true , ex.toString());
             sd.setVisible(true);
         }
+        catch (IOException ex)
+        {
+            Logger.getLogger(StreetViewGUI.class.getName()).log(Level.SEVERE, null, ex);
+            SolutionDialog sd = new SolutionDialog(this, true , ex.toString());
+            sd.setVisible(true);
+        }
     }//GEN-LAST:event_solveLPActionPerformed
 
     private void newStreetNetworkMenuItemActionPerformed(ActionEvent evt)//GEN-FIRST:event_newStreetNetworkMenuItemActionPerformed
@@ -301,8 +308,6 @@ public class StreetViewGUI extends javax.swing.JFrame implements NewStreetNetwor
         {
             for (int column = 0; column < columns; column++)
             {
-                System.out.print("column "+column);
-                System.out.println(" row "+row);
                 gbc.gridx = column;
                 gbc.gridy = row;
                 VIntersection junction = StreetNetworkController.getInstance().getJunction(row, column);

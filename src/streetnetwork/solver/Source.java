@@ -8,8 +8,13 @@ public class Source {
 		this.to = to;
 		this.value = value;
 	}
-
+        
+        public String getName()
+        {
+            return "i" + to.intersection_id + to.direction;
+        }
+        
 	public String print() {
-		return "i" + to.intersection_id + to.direction + " = " + value + " c;";
+		return this.getName()+ " = " + value + " c;";
 	}
 }

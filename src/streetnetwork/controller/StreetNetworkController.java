@@ -1,6 +1,9 @@
 package streetnetwork.controller;
 
+import java.io.BufferedReader;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -53,7 +56,7 @@ public class StreetNetworkController
         }
     }
 
-    public String solveLP() throws LpSolveException, FileNotFoundException, UnsupportedEncodingException
+    public String solveLP() throws LpSolveException, FileNotFoundException, UnsupportedEncodingException, IOException
     {
         Intersection[][] intersections = new Intersection[rows][columns];
         List<Street> streets = new ArrayList<Street>();
@@ -155,27 +158,61 @@ public class StreetNetworkController
             }
         }
         String lpString = new LpBuilder().createLp(rows, columns, intersections, streets, sources);
-
+        LPproblem = lpString;
         String filename = "model.lp";
         PrintWriter writer = new PrintWriter(filename, "UTF-8");
-        writer.print(lpString);
+        writer.print(LPproblem);
         writer.close();
 
-        LpSolve lpProblem = LpSolve.readLp(filename, LpSolve.NORMAL, "intersection model");
-        lpProblem.setUseNames(true, true);
-        lpProblem.solve();
-
         StringBuilder builder = new StringBuilder();
-        builder.append("Value of objective function ");
-        builder.append(lpProblem.getObjective());
-        builder.append("\n\n");
-        double[] var = lpProblem.getPtrVariables();
-        //get the Is
-        int index = lpProblem.getNameindex("o5B", false);
-        builder.append("Value of o5B ");
-        builder.append(index);
-        builder.append(" ");
-        builder.append(var[index - 1]);
+
+        if (System.getProperty("os.name").equals("Mac OS X"))
+        {
+            //builder.append(lpString);
+            Runtime rt = Runtime.getRuntime();
+            String path = StreetNetworkController.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+
+            Process exec = rt.exec("/usr/local/bin/lp_solve " + "model.lp");
+            InputStreamReader reader = new InputStreamReader(exec.getInputStream());
+            BufferedReader br = new BufferedReader(reader);
+            String line = null;
+            while ((line = br.readLine()) != null)
+            {
+                if (line.contains("Value of objective function"))
+                {
+                    builder.append(line).append("\n\r");
+                }
+                else
+                {
+                    for (Source source : sources)
+                    {
+                        if (line.contains(source.getName()))
+                        {
+                            builder.append(line).append("\n\r");
+                        }
+                    }
+                }
+            }
+        }
+        else
+        {
+            LpSolve lpProblem = LpSolve.readLp(filename, LpSolve.NORMAL, "intersection model");
+            lpProblem.setUseNames(true, true);
+            lpProblem.solve();
+
+            builder.append("Value of objective function ");
+            builder.append(lpProblem.getObjective());
+            builder.append("\n\n");
+            double[] var = lpProblem.getPtrVariables();
+            //get the Is where source is true
+            for (Source source : sources)
+            {
+                int index = lpProblem.getNameindex(source.getName(), false);
+                builder.append("Value of ").append(source.getName());
+                builder.append(" ");
+                builder.append(var[index - 1]).append("\n\r");
+            }
+        }
         return builder.toString();
     }
 
