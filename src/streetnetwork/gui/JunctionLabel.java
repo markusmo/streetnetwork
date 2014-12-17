@@ -1,6 +1,5 @@
 package streetnetwork.gui;
 
-import com.sun.rowset.internal.Row;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.net.URL;

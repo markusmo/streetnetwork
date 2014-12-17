@@ -289,6 +289,7 @@ public class StreetViewGUI extends javax.swing.JFrame implements NewStreetNetwor
     public void didEnterDimensions(int rows, int columns)
     {
         //this.dropPanel.setLayout(new GridLayout(x,y));
+        StreetNetworkController.getInstance().initialize(rows, columns);
         this.dropPanel.setLayout(new GridBagLayout());
         this.scrollPane.add(this.dropPanel);
         this.scrollPane.setViewportView(this.dropPanel);

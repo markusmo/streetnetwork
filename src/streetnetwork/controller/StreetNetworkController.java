@@ -138,7 +138,9 @@ public class StreetNetworkController
         PrintWriter writer = new PrintWriter(filename, "UTF-8");
         writer.print(lpString);
         writer.close();
-
+        
+        
+        
         LpSolve lpProblem = LpSolve.readLp(filename, LpSolve.NORMAL, "intersection model");
         lpProblem.setUseNames(true, true);
         lpProblem.solve();
