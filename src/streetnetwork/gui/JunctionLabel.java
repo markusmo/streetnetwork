@@ -23,6 +23,8 @@ public class JunctionLabel extends JLabel implements MouseListener
     public JunctionLabel(int number, int row, int column)
     {
         URL resource = this.getClass().getResource("images/junction_inactive.png");
+        this.row = row;
+        this.column = column;
         this.setIcon(new ImageIcon(resource));
         this.active = false;
         this.addMouseListener(this);
