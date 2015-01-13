@@ -12,15 +12,15 @@ import streetnetwork.viewmodels.VIntersection;
  *
  * @author Markus Mohanty <markus.mo at gmx.net>
  */
-public class JunctionLabel extends JLabel implements MouseListener
+public class IntersectionLabel extends JLabel implements MouseListener
 {
-    private VIntersection junction;
+    private VIntersection intersection;
     private boolean active;
     private int number;
     private int row;
     private int column;
     
-    public JunctionLabel(int number, int row, int column)
+    public IntersectionLabel(int number, int row, int column)
     {
         URL resource = this.getClass().getResource("images/junction_inactive.png");
         this.row = row;
@@ -35,14 +35,16 @@ public class JunctionLabel extends JLabel implements MouseListener
         this.setBorder(LineBorder.createBlackLineBorder());
     }
 
-    public VIntersection getJunction()
+    public VIntersection getIntersection()
     {
-        return junction;
+        return intersection;
     }
 
-    public void setJunction(VIntersection junction)
+    public void setIntersection(VIntersection intersection)
     {
-        this.junction = junction;
+        this.intersection = intersection;
+        this.active = this.intersection.isActive();
+        this.repaint();
     }
 
     public int getNumber()
@@ -55,15 +57,31 @@ public class JunctionLabel extends JLabel implements MouseListener
     {
         if(!this.active)
         {
+            this.active = !this.active;
+            this.intersection.setActive(active);
+            
+            JunctionSettingsDialog dialog = new JunctionSettingsDialog(null, true, number, row, column);
+            dialog.setVisible(true);
+        }
+        else
+        {
+            this.active = !this.active;
+            this.intersection.setActive(active);
+            this.intersection.setDefault();
+        }
+        switchImages();
+    }
+
+    public void switchImages()
+    {
+        if(this.active)
+        {
             URL resource = this.getClass().getResource("images/junction.png");
             this.setIcon(new ImageIcon(resource));
             this.repaint();
             this.revalidate();
             this.active = !this.active;
-            this.junction.setActive(active);
-            
-            JunctionSettingsDialog dialog = new JunctionSettingsDialog(null, true, number, row, column);
-            dialog.setVisible(true);
+            this.intersection.setActive(active);
         }
         else
         {
@@ -72,11 +90,11 @@ public class JunctionLabel extends JLabel implements MouseListener
             this.repaint();
             this.revalidate();
             this.active = !this.active;
-            this.junction.setActive(active);
-            this.junction.setDefault();
+            this.intersection.setActive(active);
+            this.intersection.setDefault();
         }
     }
-
+    
     public boolean isActive()
     {
         return active;

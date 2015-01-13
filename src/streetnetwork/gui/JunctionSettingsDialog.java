@@ -57,55 +57,55 @@ public class JunctionSettingsDialog extends JDialog
         this.add(background);
         
         //A
-        probAB.setText(""+StreetNetworkController.getInstance().getJunction(row, column).getProbAB());
-        probAC.setText(""+StreetNetworkController.getInstance().getJunction(row, column).getProbAC());
-        probAD.setText(""+StreetNetworkController.getInstance().getJunction(row, column).getProbAD());
-        if (StreetNetworkController.getInstance().getJunction(row, column).getSourceNorth()==null)
+        probAB.setText(""+StreetNetworkController.getInstance().getIntersection(row, column).getProbAB());
+        probAC.setText(""+StreetNetworkController.getInstance().getIntersection(row, column).getProbAC());
+        probAD.setText(""+StreetNetworkController.getInstance().getIntersection(row, column).getProbAD());
+        if (StreetNetworkController.getInstance().getIntersection(row, column).getSourceNorth()==null)
         {
-            rateA.setText(""+StreetNetworkController.getInstance().getJunction(row, column).getFlowA());
+            rateA.setText(""+StreetNetworkController.getInstance().getIntersection(row, column).getFlowA());
         }
         else
         {
             SourceA.setSelected(true);
-            rateA.setText(""+StreetNetworkController.getInstance().getJunction(row, column).getSourceNorth().getRate());
+            rateA.setText(""+StreetNetworkController.getInstance().getIntersection(row, column).getSourceNorth().getRate());
         }
         //B
-        probBA.setText(""+StreetNetworkController.getInstance().getJunction(row, column).getProbBA());
-        probBC.setText(""+StreetNetworkController.getInstance().getJunction(row, column).getProbBC());
-        probBD.setText(""+StreetNetworkController.getInstance().getJunction(row, column).getProbBD());
-        if (StreetNetworkController.getInstance().getJunction(row, column).getSourceSouth()==null)
+        probBA.setText(""+StreetNetworkController.getInstance().getIntersection(row, column).getProbBA());
+        probBC.setText(""+StreetNetworkController.getInstance().getIntersection(row, column).getProbBC());
+        probBD.setText(""+StreetNetworkController.getInstance().getIntersection(row, column).getProbBD());
+        if (StreetNetworkController.getInstance().getIntersection(row, column).getSourceSouth()==null)
         {
-            rateB.setText(""+StreetNetworkController.getInstance().getJunction(row, column).getFlowB());
+            rateB.setText(""+StreetNetworkController.getInstance().getIntersection(row, column).getFlowB());
         }else
         {
             SourceB.setSelected(true);
-            rateB.setText(""+StreetNetworkController.getInstance().getJunction(row, column).getSourceSouth().getRate());
+            rateB.setText(""+StreetNetworkController.getInstance().getIntersection(row, column).getSourceSouth().getRate());
         }
         
         //C
-        probCA.setText(""+StreetNetworkController.getInstance().getJunction(row, column).getProbCA());
-        probCB.setText(""+StreetNetworkController.getInstance().getJunction(row, column).getProbCB());
-        probCD.setText(""+StreetNetworkController.getInstance().getJunction(row, column).getProbCD());
-        if (StreetNetworkController.getInstance().getJunction(row, column).getSourceWest()==null)
+        probCA.setText(""+StreetNetworkController.getInstance().getIntersection(row, column).getProbCA());
+        probCB.setText(""+StreetNetworkController.getInstance().getIntersection(row, column).getProbCB());
+        probCD.setText(""+StreetNetworkController.getInstance().getIntersection(row, column).getProbCD());
+        if (StreetNetworkController.getInstance().getIntersection(row, column).getSourceWest()==null)
         {
-            rateC.setText(""+StreetNetworkController.getInstance().getJunction(row, column).getFlowC());
+            rateC.setText(""+StreetNetworkController.getInstance().getIntersection(row, column).getFlowC());
         }else
         {
             SourceC.setSelected(true);
-            rateC.setText(""+StreetNetworkController.getInstance().getJunction(row, column).getSourceWest().getRate());
+            rateC.setText(""+StreetNetworkController.getInstance().getIntersection(row, column).getSourceWest().getRate());
         }
         
         //D
-        probDA.setText(""+StreetNetworkController.getInstance().getJunction(row, column).getProbDA());
-        probDB.setText(""+StreetNetworkController.getInstance().getJunction(row, column).getProbDB());
-        probDC.setText(""+StreetNetworkController.getInstance().getJunction(row, column).getProbDC());
-        if (StreetNetworkController.getInstance().getJunction(row, column).getSourceEast()==null)
+        probDA.setText(""+StreetNetworkController.getInstance().getIntersection(row, column).getProbDA());
+        probDB.setText(""+StreetNetworkController.getInstance().getIntersection(row, column).getProbDB());
+        probDC.setText(""+StreetNetworkController.getInstance().getIntersection(row, column).getProbDC());
+        if (StreetNetworkController.getInstance().getIntersection(row, column).getSourceEast()==null)
         {
-            rateD.setText(""+StreetNetworkController.getInstance().getJunction(row, column).getFlowD());
+            rateD.setText(""+StreetNetworkController.getInstance().getIntersection(row, column).getFlowD());
         }else
         {
             SourceD.setSelected(true);
-            rateD.setText(""+StreetNetworkController.getInstance().getJunction(row, column).getSourceEast().getRate());
+            rateD.setText(""+StreetNetworkController.getInstance().getIntersection(row, column).getSourceEast().getRate());
         }
         
     }

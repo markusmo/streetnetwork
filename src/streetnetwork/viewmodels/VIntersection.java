@@ -1,12 +1,23 @@
 package streetnetwork.viewmodels;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  *
  * @author Markus Mohanty <markus.mo at gmx.net>
  */
+@XmlRootElement(name = "intersection")
+@XmlAccessorType (XmlAccessType.FIELD)
 public class VIntersection
 {
+    public VIntersection(){}
+    
     private int id;
+    private int x;
+    private int y;
     //A
     private double probAB;
     private double probAC;
@@ -32,12 +43,14 @@ public class VIntersection
     private VSource sourceSouth;
     private VSource sourceWest;
     private VSource sourceEast;
-    
+
     private boolean active;
 
-    public VIntersection(int id)
+    public VIntersection(int id, int x, int y)
     {
         this.id = id;
+        this.x = x;
+        this.y = y;
         this.setDefault();
     }
 
@@ -49,6 +62,31 @@ public class VIntersection
     public boolean isActive()
     {
         return active;
+    }
+
+    public void setId(int id)
+    {
+        this.id = id;
+    }
+
+    public void setX(int x)
+    {
+        this.x = x;
+    }
+
+    public void setY(int y)
+    {
+        this.y = y;
+    }
+
+    public int getX()
+    {
+        return x;
+    }
+
+    public int getY()
+    {
+        return y;
     }
     
     public int getId()
@@ -278,5 +316,40 @@ public class VIntersection
         this.probDB = 0.25;
         this.probDC = 0.5;
         this.flowD = 0.3;
+    }
+
+    @Override
+    public String toString()
+    {
+        String retstr = "x=" + x
+                + "y=" + y
+                + "id=" + id
+                + ", probAB=" + probAB 
+                + ", probAC=" + probAC 
+                + ", probAD=" + probAD 
+                + ", flowA=" + flowA 
+                + ", probBA=" + probBA 
+                + ", probBC=" + probBC 
+                + ", probBD=" + probBD 
+                + ", flowB=" + flowB 
+                + ", probCA=" + probCA 
+                + ", probCB=" + probCB 
+                + ", probCD=" + probCD 
+                + ", flowC=" + flowC 
+                + ", probDA=" + probDA 
+                + ", probDB=" + probDB 
+                + ", probDC=" + probDC 
+                + ", flowD=" + flowD
+                + ", active=" + active;
+        if(sourceNorth != null)
+                retstr += ", sourceNorth=" + sourceNorth.toString();
+        if(sourceSouth != null)
+                retstr += ", sourceSouth=" + sourceSouth.toString();
+        if(sourceWest != null)
+                retstr += ", sourceWest=" + sourceWest.toString();
+        if(sourceEast != null)
+                retstr += "sourceEast=" + sourceEast.toString();
+        
+        return retstr + "\n\r";
     }
 }

@@ -12,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -20,6 +21,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.GroupLayout;
 import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -27,6 +29,8 @@ import javax.swing.JScrollPane;
 import javax.swing.KeyStroke;
 import javax.swing.WindowConstants;
 import lpsolve.LpSolveException;
+import streetnetwork.controller.LoadLPException;
+import streetnetwork.controller.SaveLPException;
 import streetnetwork.controller.StreetNetworkController;
 import streetnetwork.viewmodels.VIntersection;
 
@@ -65,6 +69,8 @@ public class StreetViewGUI extends javax.swing.JFrame implements NewStreetNetwor
         jMenu1 = new JMenu();
         newStreetNetworkMenuItem = new JMenuItem();
         resetStreetNetworkMenuItem = new JMenuItem();
+        saveStreetNetwork = new JMenuItem();
+        loadLPMenuItem = new JMenuItem();
         exitMenuItem = new JMenuItem();
         jMenu2 = new JMenu();
         solveLP = new JMenuItem();
@@ -108,6 +114,28 @@ public class StreetViewGUI extends javax.swing.JFrame implements NewStreetNetwor
         });
         jMenu1.add(resetStreetNetworkMenuItem);
 
+        saveStreetNetwork.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK));
+        saveStreetNetwork.setText("save street network");
+        saveStreetNetwork.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent evt)
+            {
+                saveStreetNetworkActionPerformed(evt);
+            }
+        });
+        jMenu1.add(saveStreetNetwork);
+
+        loadLPMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_MASK));
+        loadLPMenuItem.setText("open street network");
+        loadLPMenuItem.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent evt)
+            {
+                loadLPMenuItemActionPerformed(evt);
+            }
+        });
+        jMenu1.add(loadLPMenuItem);
+
         exitMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, InputEvent.CTRL_MASK));
         exitMenuItem.setText("exit");
         exitMenuItem.addActionListener(new ActionListener()
@@ -123,7 +151,7 @@ public class StreetViewGUI extends javax.swing.JFrame implements NewStreetNetwor
 
         jMenu2.setText("Solver");
 
-        solveLP.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK));
+        solveLP.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, InputEvent.CTRL_MASK));
         solveLP.setText("solve LP");
         solveLP.addActionListener(new ActionListener()
         {
@@ -160,7 +188,7 @@ public class StreetViewGUI extends javax.swing.JFrame implements NewStreetNetwor
         layout.setVerticalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 429, Short.MAX_VALUE)
+                .addComponent(scrollPane)
                 .addContainerGap())
         );
 
@@ -230,6 +258,43 @@ public class StreetViewGUI extends javax.swing.JFrame implements NewStreetNetwor
         System.exit(0);
     }//GEN-LAST:event_exitMenuItemActionPerformed
 
+    private void saveStreetNetworkActionPerformed(ActionEvent evt)//GEN-FIRST:event_saveStreetNetworkActionPerformed
+    {//GEN-HEADEREND:event_saveStreetNetworkActionPerformed
+        JFileChooser fch = new JFileChooser();
+        int retval = fch.showSaveDialog(this);
+        if(retval == JFileChooser.APPROVE_OPTION)
+        {
+            File selected = fch.getSelectedFile();
+            try
+            {
+                StreetNetworkController.getInstance().saveLP(selected.getAbsolutePath());
+            } catch (SaveLPException ex)
+            {
+                SolutionDialog dialog = new SolutionDialog(this, rootPaneCheckingEnabled, ex.getLocalizedMessage());
+                dialog.setVisible(true);
+            }
+        }
+    }//GEN-LAST:event_saveStreetNetworkActionPerformed
+
+    private void loadLPMenuItemActionPerformed(ActionEvent evt)//GEN-FIRST:event_loadLPMenuItemActionPerformed
+    {//GEN-HEADEREND:event_loadLPMenuItemActionPerformed
+        JFileChooser fch = new JFileChooser();
+        int retval = fch.showOpenDialog(this);
+        if(retval == JFileChooser.APPROVE_OPTION)
+        {
+            File selected = fch.getSelectedFile();
+            try
+            {
+                StreetNetworkController.getInstance().loadLP(selected.getAbsolutePath());
+            } catch (LoadLPException ex)
+            {
+                SolutionDialog dialog = new SolutionDialog(this, rootPaneCheckingEnabled, ex.getLocalizedMessage());
+                dialog.setVisible(true);
+            }
+        }
+        loadStreetNetwork();
+    }//GEN-LAST:event_loadLPMenuItemActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -284,9 +349,11 @@ public class StreetViewGUI extends javax.swing.JFrame implements NewStreetNetwor
     private JMenuItem exitMenuItem;
     private JMenu jMenu1;
     private JMenu jMenu2;
+    private JMenuItem loadLPMenuItem;
     private JMenuBar menuBar;
     private JMenuItem newStreetNetworkMenuItem;
     private JMenuItem resetStreetNetworkMenuItem;
+    private JMenuItem saveStreetNetwork;
     private JScrollPane scrollPane;
     private JMenuItem showMenuItem;
     private JMenuItem solveLP;
@@ -310,10 +377,39 @@ public class StreetViewGUI extends javax.swing.JFrame implements NewStreetNetwor
             {
                 gbc.gridx = column;
                 gbc.gridy = row;
-                VIntersection junction = StreetNetworkController.getInstance().getJunction(row, column);
-                JunctionLabel junctionLabel = new JunctionLabel(junction.getId(), row, column);
-                junctionLabel.setJunction(junction);
-                this.dropPanel.add(junctionLabel,gbc);
+                VIntersection junction = StreetNetworkController.getInstance().getIntersection(row, column);
+                IntersectionLabel intersectionLabel = new IntersectionLabel(junction.getId(), row, column);
+                intersectionLabel.setIntersection(junction);
+                this.dropPanel.add(intersectionLabel,gbc);
+            }
+        }
+        
+        this.dropPanel.setVisible(true);
+        this.repaint();
+        this.revalidate();
+    }
+
+    private void loadStreetNetwork()
+    {
+        //this.dropPanel.setLayout(new GridLayout(x,y));
+        this.dropPanel.setLayout(new GridBagLayout());
+        this.scrollPane.add(this.dropPanel);
+        this.scrollPane.setViewportView(this.dropPanel);
+        
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.anchor = GridBagConstraints.CENTER;
+        for (int row = 0; row < StreetNetworkController.getInstance().getRows(); row++)
+        {
+            for (int column = 0; column < StreetNetworkController.getInstance().getColumns(); column++)
+            {
+                gbc.gridx = column;
+                gbc.gridy = row;
+                VIntersection intersection = StreetNetworkController.getInstance().getIntersection(row, column);
+                IntersectionLabel intersectionLabel = new IntersectionLabel(intersection.getId(), row, column);
+                intersectionLabel.setIntersection(intersection);
+                intersectionLabel.switchImages();
+                this.dropPanel.add(intersectionLabel,gbc);
             }
         }
         

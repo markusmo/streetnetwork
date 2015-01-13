@@ -8,6 +8,9 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.xml.bind.JAXBException;
 import lpsolve.LpSolve;
 import lpsolve.LpSolveException;
 import streetnetwork.solver.Intersection;
@@ -50,13 +53,13 @@ public class StreetNetworkController
         {
             for (int column = 0; column < columns; column++)
             {
-                vintersections[row][column] = new VIntersection(number++);
+                vintersections[row][column] = new VIntersection(number++, row, column);
                 vintersections[row][column].setDefault();
             }
         }
     }
 
-    public String solveLP() throws LpSolveException, FileNotFoundException, UnsupportedEncodingException, IOException
+    public Triplet generateLP()
     {
         Intersection[][] intersections = new Intersection[rows][columns];
         List<Street> streets = new ArrayList<Street>();
@@ -159,6 +162,14 @@ public class StreetNetworkController
         }
         String lpString = new LpBuilder().createLp(rows, columns, intersections, streets, sources);
         LPproblem = lpString;
+        
+        return new Triplet(intersections, streets, sources);
+        
+    }
+    
+    public String solveLP() throws LpSolveException, FileNotFoundException, UnsupportedEncodingException, IOException
+    {
+        Triplet triplet = generateLP();
         String filename = "model.lp";
         PrintWriter writer = new PrintWriter(filename, "UTF-8");
         writer.print(LPproblem);
@@ -166,12 +177,15 @@ public class StreetNetworkController
 
         StringBuilder builder = new StringBuilder();
 
-        if (System.getProperty("os.name").equals("Mac OS X"))
+        //Get operating system
+        String OS = System.getProperty("os.name");
+        
+        if (OS.equals("Mac OS X"))
         {
             //builder.append(lpString);
             Runtime rt = Runtime.getRuntime();
             String path = StreetNetworkController.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-
+            //lp_solve installed with http://brew.sh/
             Process exec = rt.exec("/usr/local/bin/lp_solve " + "model.lp");
             InputStreamReader reader = new InputStreamReader(exec.getInputStream());
             BufferedReader br = new BufferedReader(reader);
@@ -184,7 +198,7 @@ public class StreetNetworkController
                 }
                 else
                 {
-                    for (Source source : sources)
+                    for (Source source : triplet.getSources())
                     {
                         if (line.contains(source.getName()))
                         {
@@ -194,6 +208,34 @@ public class StreetNetworkController
                 }
             }
         }
+        else if( OS.contains("nix") || OS.contains("nux") || OS.contains("aix"))
+        {
+            Runtime rt = Runtime.getRuntime();
+            String path = StreetNetworkController.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+            //installed with "apt-get install lp-solve" on ubuntu
+            Process exec = rt.exec("/usr/bin/lp_solve " + "model.lp");
+            InputStreamReader reader = new InputStreamReader(exec.getInputStream());
+            BufferedReader br = new BufferedReader(reader);
+            String line = null;
+            while ((line = br.readLine()) != null)
+            {
+                if (line.contains("Value of objective function"))
+                {
+                    builder.append(line).append("\n\r");
+                }
+                else
+                {
+                    for (Source source : triplet.getSources())
+                    {
+                        if (line.contains(source.getName()))
+                        {
+                            builder.append(line).append("\n\r");
+                        }
+                    }
+                }
+            }
+        }
+        //on windows
         else
         {
             LpSolve lpProblem = LpSolve.readLp(filename, LpSolve.NORMAL, "intersection model");
@@ -205,7 +247,7 @@ public class StreetNetworkController
             builder.append("\n\n");
             double[] var = lpProblem.getPtrVariables();
             //get the Is where source is true
-            for (Source source : sources)
+            for (Source source : triplet.getSources())
             {
                 int index = lpProblem.getNameindex(source.getName(), false);
                 builder.append("Value of ").append(source.getName());
@@ -280,11 +322,11 @@ public class StreetNetworkController
         return columns;
     }
 
-    public void addJunctions(int id, int row, int column)
+    public void addIntersection(int id, int row, int column)
     {
-        vintersections[row][column] = new VIntersection(id);
+        vintersections[row][column] = new VIntersection(id, row, column);
     }
-
+    
     //A
     public void addProbabilityAB(int row, int column, double prob)
     {
@@ -390,8 +432,40 @@ public class StreetNetworkController
         }
     }
 
-    public VIntersection getJunction(int row, int column)
+    public VIntersection getIntersection(int row, int column)
     {
         return vintersections[row][column];
+    }
+
+    public void saveLP(String filepath) throws SaveLPException
+    {
+        try
+        {
+            Serializer.getInstance().writeToFile(filepath, vintersections, rows, columns);
+        } catch (FileNotFoundException ex)
+        {
+            Logger.getLogger(StreetNetworkController.class.getName()).log(Level.SEVERE, null, ex);
+            throw new SaveLPException(ex);
+        } catch (JAXBException ex)
+        {
+            Logger.getLogger(StreetNetworkController.class.getName()).log(Level.SEVERE, null, ex);
+            throw new SaveLPException(ex);
+        }
+    }
+    
+    public void loadLP(String filepath) throws LoadLPException
+    {
+        try
+        {
+            vintersections = Serializer.getInstance().readFromFile(filepath);
+            rows = vintersections.length;
+            columns = vintersections[0].length;
+            generateLP();
+            
+        } catch (JAXBException ex)
+        {
+            Logger.getLogger(StreetNetworkController.class.getName()).log(Level.SEVERE, null, ex);
+            throw new LoadLPException(ex);
+        }
     }
 }
