@@ -367,8 +367,18 @@ public class StreetViewGUI extends javax.swing.JFrame implements NewStreetNetwor
     @Override
     public void didEnterDimensions(int rows, int columns)
     {
-        //this.dropPanel.setLayout(new GridLayout(x,y));
         StreetNetworkController.getInstance().initialize(rows, columns);
+        paintStreetNetwork(rows, columns);
+    }
+
+    private void loadStreetNetwork()
+    {
+        this.resetGUI();
+        this.paintStreetNetwork(StreetNetworkController.getInstance().getRows(), StreetNetworkController.getInstance().getColumns());
+    }
+    
+    private void paintStreetNetwork(int rows, int columns)
+    {
         this.dropPanel.setLayout(new GridBagLayout());
         this.scrollPane.add(this.dropPanel);
         this.scrollPane.setViewportView(this.dropPanel);
@@ -385,35 +395,6 @@ public class StreetViewGUI extends javax.swing.JFrame implements NewStreetNetwor
                 VIntersection junction = StreetNetworkController.getInstance().getIntersection(row, column);
                 IntersectionLabel intersectionLabel = new IntersectionLabel(junction.getId(), row, column);
                 intersectionLabel.setIntersection(junction);
-                this.dropPanel.add(intersectionLabel,gbc);
-            }
-        }
-        
-        this.dropPanel.setVisible(true);
-        this.repaint();
-        this.revalidate();
-    }
-
-    private void loadStreetNetwork()
-    {
-        this.resetGUI();
-        this.dropPanel.setLayout(new GridBagLayout());
-        this.scrollPane.add(this.dropPanel);
-        this.scrollPane.setViewportView(this.dropPanel);
-        
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.fill = GridBagConstraints.BOTH;
-        gbc.anchor = GridBagConstraints.CENTER;
-        for (int row = 0; row < StreetNetworkController.getInstance().getRows(); row++)
-        {
-            for (int column = 0; column < StreetNetworkController.getInstance().getColumns(); column++)
-            {
-                gbc.gridx = column;
-                gbc.gridy = row;
-                VIntersection intersection = StreetNetworkController.getInstance().getIntersection(row, column);
-                IntersectionLabel intersectionLabel = new IntersectionLabel(intersection.getId(), row, column);
-                intersectionLabel.setIntersection(intersection);
-                intersectionLabel.switchImages();
                 this.dropPanel.add(intersectionLabel,gbc);
             }
         }
