@@ -246,11 +246,16 @@ public class StreetViewGUI extends javax.swing.JFrame implements NewStreetNetwor
 
     private void resetStreetNetworkMenuItemActionPerformed(ActionEvent evt)//GEN-FIRST:event_resetStreetNetworkMenuItemActionPerformed
     {//GEN-HEADEREND:event_resetStreetNetworkMenuItemActionPerformed
+        resetGUI();
+    }//GEN-LAST:event_resetStreetNetworkMenuItemActionPerformed
+
+    private void resetGUI()
+    {
         StreetNetworkController.getInstance().LPproblem = null;
         this.dropPanel.removeAll();
         this.repaint();
         this.revalidate();
-    }//GEN-LAST:event_resetStreetNetworkMenuItemActionPerformed
+    }
 
     private void exitMenuItemActionPerformed(ActionEvent evt)//GEN-FIRST:event_exitMenuItemActionPerformed
     {//GEN-HEADEREND:event_exitMenuItemActionPerformed
@@ -391,7 +396,7 @@ public class StreetViewGUI extends javax.swing.JFrame implements NewStreetNetwor
 
     private void loadStreetNetwork()
     {
-        //this.dropPanel.setLayout(new GridLayout(x,y));
+        this.resetGUI();
         this.dropPanel.setLayout(new GridBagLayout());
         this.scrollPane.add(this.dropPanel);
         this.scrollPane.setViewportView(this.dropPanel);
