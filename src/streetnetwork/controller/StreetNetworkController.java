@@ -460,8 +460,7 @@ public class StreetNetworkController
             vintersections = Serializer.getInstance().readFromFile(filepath);
             rows = vintersections.length;
             columns = vintersections[0].length;
-            generateLP();
-            
+            //generateLP(); 
         } catch (JAXBException ex)
         {
             Logger.getLogger(StreetNetworkController.class.getName()).log(Level.SEVERE, null, ex);

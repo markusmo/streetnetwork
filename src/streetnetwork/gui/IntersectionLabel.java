@@ -80,8 +80,6 @@ public class IntersectionLabel extends JLabel implements MouseListener
             this.setIcon(new ImageIcon(resource));
             this.repaint();
             this.revalidate();
-            this.active = !this.active;
-            this.intersection.setActive(active);
         }
         else
         {
@@ -89,9 +87,6 @@ public class IntersectionLabel extends JLabel implements MouseListener
             this.setIcon(new ImageIcon(resource));
             this.repaint();
             this.revalidate();
-            this.active = !this.active;
-            this.intersection.setActive(active);
-            this.intersection.setDefault();
         }
     }
     

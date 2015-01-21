@@ -395,6 +395,7 @@ public class StreetViewGUI extends javax.swing.JFrame implements NewStreetNetwor
                 VIntersection junction = StreetNetworkController.getInstance().getIntersection(row, column);
                 IntersectionLabel intersectionLabel = new IntersectionLabel(junction.getId(), row, column);
                 intersectionLabel.setIntersection(junction);
+                intersectionLabel.switchImages();
                 this.dropPanel.add(intersectionLabel,gbc);
             }
         }
