@@ -64,7 +64,7 @@ public class StreetViewGUI extends javax.swing.JFrame implements NewStreetNetwor
     {
 
         scrollPane = new JScrollPane();
-        dropPanel = new DropPanel();
+        dropPanel = new StreetNetworkPanel();
         menuBar = new JMenuBar();
         jMenu1 = new JMenu();
         newStreetNetworkMenuItem = new JMenuItem();
@@ -350,7 +350,7 @@ public class StreetViewGUI extends javax.swing.JFrame implements NewStreetNetwor
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private DropPanel dropPanel;
+    private StreetNetworkPanel dropPanel;
     private JMenuItem exitMenuItem;
     private JMenu jMenu1;
     private JMenu jMenu2;

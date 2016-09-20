@@ -1,5 +1,6 @@
 package streetnetwork.controller;
 
+import streetnetwork.controller.serializer.Serializer;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;

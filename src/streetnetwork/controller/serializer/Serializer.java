@@ -1,10 +1,7 @@
-package streetnetwork.controller;
+package streetnetwork.controller.serializer;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.JAXBContext;

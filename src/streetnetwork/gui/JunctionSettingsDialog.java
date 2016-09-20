@@ -160,6 +160,7 @@ public class JunctionSettingsDialog extends JDialog
         jLabel16 = new JLabel();
         rateC = new JTextField();
         forAllButton = new JButton();
+        jButton1 = new JButton();
 
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Junction Settings");
@@ -266,6 +267,15 @@ public class JunctionSettingsDialog extends JDialog
             }
         });
 
+        jButton1.setText("cancel");
+        jButton1.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent evt)
+            {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -279,10 +289,11 @@ public class JunctionSettingsDialog extends JDialog
                                 .addGap(39, 39, 39)
                                 .addComponent(jLabel16))
                             .addComponent(SourceC, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                             .addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGap(0, 177, Short.MAX_VALUE)
+                                .addGap(0, 87, Short.MAX_VALUE)
+                                .addComponent(jButton1)
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(forAllButton)
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(okButton)
@@ -333,7 +344,6 @@ public class JunctionSettingsDialog extends JDialog
                                             .addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                                 .addComponent(jLabel11)
                                                 .addGap(20, 20, 20)))
-                                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                                         .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                                             .addComponent(probAD, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
                                             .addGroup(layout.createSequentialGroup()
@@ -369,15 +379,13 @@ public class JunctionSettingsDialog extends JDialog
                                         .addComponent(SourceA, GroupLayout.PREFERRED_SIZE, 125, GroupLayout.PREFERRED_SIZE)
                                         .addGroup(layout.createSequentialGroup()
                                             .addGap(36, 36, 36)
-                                            .addComponent(jLabel13)
-                                            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 13, GroupLayout.PREFERRED_SIZE)))))))
-                    .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(201, 201, 201)
-                            .addComponent(titleLabel))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(215, 215, 215)
-                            .addComponent(jLabel14))))
+                                            .addComponent(jLabel13)))))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(201, 201, 201)
+                        .addComponent(titleLabel))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(215, 215, 215)
+                        .addComponent(jLabel14)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -458,7 +466,8 @@ public class JunctionSettingsDialog extends JDialog
                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                     .addComponent(okButton)
-                    .addComponent(forAllButton))
+                    .addComponent(forAllButton)
+                    .addComponent(jButton1))
                 .addContainerGap())
         );
 
@@ -478,12 +487,18 @@ public class JunctionSettingsDialog extends JDialog
         this.dispose();
     }//GEN-LAST:event_forAllButtonActionPerformed
 
+    private void jButton1ActionPerformed(ActionEvent evt)//GEN-FIRST:event_jButton1ActionPerformed
+    {//GEN-HEADEREND:event_jButton1ActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private JCheckBox SourceA;
     private JCheckBox SourceB;
     private JCheckBox SourceC;
     private JCheckBox SourceD;
     private JButton forAllButton;
+    private JButton jButton1;
     private JLabel jLabel1;
     private JLabel jLabel10;
     private JLabel jLabel11;

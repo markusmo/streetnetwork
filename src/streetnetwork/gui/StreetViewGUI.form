@@ -146,7 +146,7 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
       <SubComponents>
-        <Container class="streetnetwork.gui.DropPanel" name="dropPanel">
+        <Container class="streetnetwork.gui.StreetNetworkPanel" name="dropPanel">
 
           <Layout>
             <DimensionLayout dim="0">
